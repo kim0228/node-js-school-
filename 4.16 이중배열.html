@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset='utf-8'>
+    <title></title>
+  </head>
+  <input type="radio" name="a">
+  <input type="radio" name="a">
+  <input type="radio" name="a">
+
+  <body>
+    <script>
+      // 예시
+      // var arr = [];
+      // arr[0] = [];
+      // arr[0][0] = 1;
+      // arr[0][1] = 2;
+      // arr[0][2] = 3;
+      // arr[0][3] = 4;
+      // arr[0][4] = 5;
+      // arr[1] = [];
+      // arr[1][0] = 6;
+      // arr[1][1] = 7;
+      // arr[1][2] = 8;
+      // console.log(arr);
+
+      // 1씩 증가
+      var arr1 = [];
+      for (i=0;i<5;i++){
+        arr1[i] = [];
+      for (j=0;j<5;j++){
+        arr1[i][j] = 5*i + j + 1;
+      }
+    }console.log(arr1);
+
+    // 3씩 더해지기
+      var arr2 = [];
+      var num = 1;
+      for (i=0; i<5; i++){
+        arr2[i] = [];
+        for(j=0; j<5; j++){
+        arr2[i][j] = num;
+        num = num + 3;    // num += 3;이랑 똑같은 의미이다.
+      }
+    }console.log(arr2);
+
+    // 00000
+    var arr0 = [];
+    for(i=0; i<5;i++){
+      arr0[i] = [];
+      for(j=0; j<5; j++){
+        arr0[i][j] = 0;
+      }
+    }  console.log(arr0);
+
+    // 01234
+    var arr3 = [];
+    for(i=0; i<5; i++){
+      arr3[i] = [];
+      for(j=0; j<5; j++){
+        arr3[i][j] = i*j;
+      }
+    }console.log(arr3);
+
+    //"00", "01", "02"
+    var arr4 = [];
+    for(i=0; i<5; i++){
+      arr4[i] = [];
+      for(j=0; j<5; j++){
+        arr4[i][j] = "" + i + j;
+      }
+  }console.log(arr4);
+
+    // 즐거운 손코딩1
+  var arr5 = [];
+  var num = 0;
+  for(var i = 0;i<5;i++){
+    arr5[i] = [];
+    for(var j = 0;j<5;j++){
+      arr5[i][j] = num;
+      num += i*2 + j*3;
+    }
+  }console.log(arr5);
+
+  // 즐거운 손코딩2
+  var arr6 = [];
+  for(var i=1;i<10;i = i+3){
+    arr6[(i+2)/3-1] = [];
+    for(var j=0;j<5;j++){
+      arr6[(i+2)/3-1][j] = i*j;
+    }
+  }console.log(arr6);
+
+    </script>
+    </body>
+  </html>

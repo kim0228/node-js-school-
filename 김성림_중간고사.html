@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<body>
+  이름: <input type="text" id="textarea"><br>
+  html: <input type="text" id="num1"><br>
+  javascript: <input type="text" id="num2"><br>
+  css: <input type="text" id="num3"><br>
+  nodejs: <input type="text" id="num4"><br>
+  mysql: <input type="text" id="num5"><br>
+
+  <input type="button" value="성적입력" id='score'>
+  <input type="button" value="초기화" id='ClearBtn'><br><br>
+  <span id="resultArea"></span><br>
+  <span id="resultArea1"></span><br>
+</body>
+<script>
+  var cnt = 0;
+  document.getElementById('score').addEventListener('click',function(){
+  var name = document.getElementById('textarea').value;
+  var num1 = Number(document.getElementById('num1').value);
+  var num2 = Number(document.getElementById('num2').value);
+  var num3 = Number(document.getElementById('num3').value);
+  var num4 = Number(document.getElementById('num4').value);
+  var num5 = Number(document.getElementById('num5').value);
+  var sum = num1 + num2 + num3 + num4 + num5;
+  avr = sum / 5;
+  document.getElementById('resultArea').innerHTML += `이름: ${name} / html: ${num1} / javascript: ${num2}
+  / css: ${num3} / nodejs: ${num4} / mysql: ${num5} / ${name}평균: ${avr}<br><br>`;
+
+
+  document.getElementById('resultArea1').innerHTML += `평균: html평균: ${avr} / javascript평균: ${avr} / css평균: ${avr}
+  nodejs평균: ${avr} / mysql평균: ${avr} / 전체평균: ${avr}<br><br>`
+  cnt++;
+
+  });
+
+  document.getElementById('ClearBtn').addEventListener('click',function(){
+    document.getElementById('textarea').value= "";
+    document.getElementById('num1').value= "";
+    document.getElementById('num2').value= "";
+    document.getElementById('num3').value= "";
+    document.getElementById('num4').value= "";
+    document.getElementById('num5').value= "";
+    document.getElementById('resultArea').innerHTML = "";
+    document.getElementById('resultArea1').innerHTML = "";
+  });
+</script>
+</html>

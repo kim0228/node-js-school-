@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset='utf-8'>
+  <title></title>
+</head>
+
+<body>
+  1번 0<input type="radio" name="radioBtn">
+  1<input type="radio" name="radioBtn">
+  2<input type="radio" name="radioBtn">
+  3<input type="radio" name="radioBtn">
+  4<input type="radio" name="radioBtn">
+  가중치 <input type="text" id="textId"><br>
+
+  2번 0<input type="radio" name="radioBtn1">
+  1<input type="radio" name="radioBtn1">
+  2<input type="radio" name="radioBtn1">
+  3<input type="radio" name="radioBtn1">
+  4<input type="radio" name="radioBtn1">
+  가중치 <input type="text" id="textId1"><br>
+
+  3번 0<input type="radio" name="radioBtn2">
+  1<input type="radio" name="radioBtn2">
+  2<input type="radio" name="radioBtn2">
+  3<input type="radio" name="radioBtn2">
+  4<input type="radio" name="radioBtn2">
+  가중치<input type="text" id="textId2"><br>
+
+  <span id='www'></span><br>
+
+  <input type="button" value="계산" id="btn">
+  <script>
+
+    document.getElementById('btn').addEventListener("click", function(){
+      var radi = document.getElementsByName('radioBtn');
+      var radi1 = document.getElementsByName('radioBtn1');
+      var radi2 = document.getElementsByName('radioBtn2');
+
+      var aa = document.getElementById('textId').value;
+      var bb = document.getElementById('textId1').value;
+      var cc = document.getElementById('textId2').value;
+
+      for (var i=0;i<radi.length; i++) {
+        if(radi[i].checked == true) {
+          var a = i;
+
+        }
+      }
+
+      for (var i=0;i<radi1.length; i++) {
+        if(radi1[i].checked == true) {
+          var b = i;
+
+        }
+      }
+
+      for (var i=0;i<radi2.length; i++) {
+        if(radi2[i].checked == true) {
+          var c = i;
+
+        }
+      }
+      var sum = (a*aa)+(b*bb)+(c*cc);
+      text = `${a}x${aa} + ${b}x${bb} + ${c}x${cc} = ${sum}`;
+      document.getElementById('www').innerHTML = text
+      // (a+"x"+aa)+" "+(b+"x"+bb)+" "+(c+"x"+cc)+" "+"="+" "+ sum;
+      });
+      // 체크했을 때 경고 뜨게 하는 코드
+      // var radios = document.getElementsByName('radioBtn');
+      // for (var i=0; i<radios.length;i++) {
+      //   if (radios[i].checked == true) {
+      //     alert(i + 1);
+
+
+
+    // 객체
+    // console.log(document.getElementsByName('radioBtn'))
+    // var cars = [];
+    // var car1 = {};
+    // var car2 = {};
+    // car1.color = "red";
+    // car1.weight = "500kg";
+    // car1.number = 1234;
+    // car1.kind = "소나타";
+    // car1.accidentHistory = [];
+    // car1.accidentHistory[0] = '2011-03-01';
+    // car1.accidentHistory[1] = '2011-04-16'
+    // car2.name = "abc";
+    // car2.abc = 123;
+    //
+    // cars[0] = car1, cars[1] = car2;
+    // cars[2] = {
+    //   name:"abc",
+    //   age:123
+    // }
+    // console.log(car1);
+    // console.log(car2);
+    // console.log(cars);
+  </script>
+</body>
+
+</html>

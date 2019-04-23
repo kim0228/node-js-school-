@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset='utf-8'>
+    <title></title>
+  </head>
+  <body>
+    <script>
+      var arr1 = [];
+      var arr2 = [];
+      var arr3 = [];
+      var arr4 = [];
+      var arr5 = [];
+      var arr6 = [];
+      var arr7 = [];
+      var arr8 = [];
+      var arr9 = [];
+
+      //arr1
+      for (var i = 0; i < 10; i++) {
+      arr1[i] = i + 1;
+      }
+      console.log(arr1);
+
+      // arr2
+      for (var k = 0; k < 11; k++) {
+        arr2[k] = k * 2;
+      }
+      console.log(arr2);
+
+      // arr3
+      for (var s = 0; s < 8; s++) {
+       arr3[s] = "abc" + (s+1);
+        //arr3[0] = "abc" + 1;
+        // arr3[1] = "abc" + 2;
+        // arr3[2] = "abc" + 3;
+        // arr3[3] = "abc" + 4;
+      }
+      // 다른 예
+      // for (var i=1;i<8;i++) {
+      // arr[s-1] = "abc" + s;
+      // }
+      // console.log(arr);
+      console.log(arr3);
+
+      // arr4
+      for (var w = 0; w < 9; w++) {
+       arr4[w] = (w*3)+1;
+      }
+      console.log(arr4);
+
+      // arr5
+      for (var a = 0; a < 10; a++) {
+        arr5[a] = a%2;
+        }
+      console.log(arr5);
+
+      // arr6
+      for (var b = 0; b < 12; b++) {
+        arr6[b] = b%4;
+      }
+      console.log(arr6);
+
+     // arr7(text)
+      var n = ""
+      for (var c = 0; c < 5; c++) {
+      n = n +"text";
+      arr7[c] = n;
+      }
+      console.log(arr7);
+      // 다른 방법
+    //   var arr2 = [];
+    //   for (var i = 0; i < 5; i++) {
+    //   arr2[i] = "";
+    //   for (var j = 0; j < 5; j++) {
+    //     arr2[j] = "text";
+    //   }
+    // }
+
+      // arr8
+      var num = 1;
+      for (var d = 0; d < 8; d++) {
+        arr8[d] = num;
+        num = num * 10;
+      }
+      console.log(arr8);
+
+      // var arr1 = [1,2,3,4,5,6,"aa"];
+      //
+      // for(var i = 0; i<arr1.length;i++) {
+      //   console.log(arr1[i]);
+      // }
+      //
+      // var str = "abcdef";
+
+      // 369369문제
+   //    for (var i = 1; i<201;i++) {
+   //      var str = i + "";
+   //      var string = " ";
+   //      for (var j = 0;j<str.length; j++) {
+   //        if (str[j] == 3 || str[j] == 6 || str[j] == 9) {
+   //          string = "짝"
+   //        }
+   //      }  console.log(str + string);
+   // }
+
+   // 교수님이 하신거
+   for(var i=0; i<201;i++) {
+     var str = i + ""
+     console.log(str);
+     for(var j = 0;j<str.length;j++){
+       if(str[j] == "3" || str[j] == "6" || str[j] == "9")
+       console.log("짝");
+       break;
+     }
+   }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset='utf-8'>
+    <title></title>
+  </head>
+  <body>
+  <script>
+    var arr1 = [];
+    var i = 0;
+    for (var i = 0;i < 5; i++) {
+      arr1[i] = i * i;
+    }
+    console.log(arr1);
+
+    var arr2 = [];
+    for (var i = 0; i<5; i++) {
+      if (i%2 == 0) {
+        arr2[i] = "J";
+      } else {
+        arr2[i] = "h"
+      }
+    }
+    console.log(arr2);
+
+    var arr3 = [];
+    arr3[0] = 0;
+    for (var i = 2; i<10; i += 2) {
+      arr3[i / 2] = arr3[i / 2 - 1]+10;
+    }
+    console.log(arr3);
+
+    var arr4 = [];
+    for (var i = 4; i < 16; i = i+4) {
+      for (var j = 0; j < 4; j++) {
+        arr4[i - 4 + j] = i - j;
+      }
+    }
+    console.log(arr4);
+  </script>
+  </body>
+  </html>

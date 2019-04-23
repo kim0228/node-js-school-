@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<span id="numberArea"></span>
+<body>
+
+  <script>
+
+   // for문과 if문으로 1부터 100까지 출력
+   var numberText = '<br>';
+   for (var i = 1; i<=100; i++) {
+    if (i % 10 == 0) {
+    numberText += i + '<br>';
+    } else {
+    numberText += i +" ";
+    }
+   }
+  document.getElementById('numberArea').innerHTML = numberText;
+
+  // 다른 답안1
+   var numberText1 = "";
+   for(var i = 0; i < 100; i++) {
+     numberText1 += i + " ";
+     if(i%10 == 0) {
+       numberText1 += '<br>'
+     }
+   }
+
+
+  // 다른 답안2
+  var numberText2 = "";
+  for(var i=0;i<10;i++) {
+    for(var j=1;j<11;j++) {
+      numberText2 += i*10+j+" ";
+    }
+    numberText2 += '<br>';
+  }
+
+  // for문을 이용하여 1부터 10까지 출력
+  for (var i = 1; i < 11; i++) {
+  console.log(i);
+  }
+   for (var i = 10; i > 0; i--) {
+     console.log(11-i);
+   }
+   for (var i = 1; i < 6; i = i + 0.5) {
+     console.log(i*2-1);
+   }
+  for (var i = 1;;) {
+    console.log(i);
+    i++;
+    if(i>10) {
+      break;
+    }
+  }
+
+
+
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,80 @@
+<html>
+<head>
+
+</head>
+<body>
+    이름 : <input type="text" id="name"><br>
+    html : <input type="text" id="html"><br>
+    javascript : <input type="text" id="javascript"><br>
+    css : <input type="text" id="css"><br>
+    nodejs : <input type="text" id="nodejs"><br>
+    mysql : <input type="text" id="mysql"><br>
+    <input type="button" value="성적입력" id="inputScoreBtn">
+    <input type="button" value="초기화" id="resetBtn">
+    <br><br>
+    <span id="scoreInfoArea"></span>
+    <br>
+    평균 : <span id="avgArea"></span><br>
+    최고점자 <span id="bestScore"></span>
+
+<script>
+    var htmlT = 0, javascriptT = 0, cssT = 0, nodejsT = 0, mysqlT = 0, studentCnt = 0, bestAvg;
+    document.getElementById('inputScoreBtn').addEventListener('click', function(){
+	    var name = document.getElementById('name').value;
+    	var html = Number(document.getElementById('html').value);
+	    var javascript = Number(document.getElementById('javascript').value);
+	    var css = Number(document.getElementById('css').value);
+	    var nodejs = Number(document.getElementById('nodejs').value);
+	    var mysql = Number(document.getElementById('mysql').value);
+	    var avg = (html + javascript + css + nodejs + mysql) / 5;
+	    htmlT += html;
+	    javascriptT += javascript;
+	    cssT += css;
+	    nodejsT += nodejs;
+	    mysqlT += mysql;
+	    studentCnt++;
+
+      if(studentCnt==1) {
+        bestAvg = avg;
+        document.getElementById('bestScore').innerHTML = `이름 : ${name} / 평균 : ${bestAvg}`;
+      }
+      else if(avg>bestAvg){
+        bestAvg = avg;
+        document.getElementById('bestScore').innerHTML = `이름 : ${name} / 평균 : ${bestAvg}`;
+      }
+
+	    var text = `이름 : ${name} / html : ${html} / javascript : ${javascript}
+      / css : ${css} / nodejs : ${nodejs} / mysql : ${mysql} / ${name }평균 : ${avg} <br>`;
+	    document.getElementById('scoreInfoArea').innerHTML += text;
+
+	    var avgText = `html평균 : ${htmlT/studentCnt}
+      / javascript평균 : ${javascriptT/studentCnt} / css평균 : ${cssT/studentCnt}
+      / nodejs평균 : ${nodejsT/studentCnt} / mysql평균 : ${mysqlT/studentCnt}
+	    / 전체평균 : ${(htmlT + javascriptT + cssT + nodejsT + mysqlT)/5/studentCnt}`;
+	    document.getElementById('avgArea').innerHTML = avgText;
+
+
+	    document.getElementById('name').value = "";
+	    document.getElementById('html').value = "";
+	    document.getElementById('javascript').value = "";
+	    document.getElementById('css').value = "";
+	    document.getElementById('nodejs').value = "";
+	    document.getElementById('mysql').value = "";
+    });
+
+
+    document.getElementById('resetBtn').addEventListener('click', function(){
+	    htmlT = 0;
+	    javascriptT = 0;
+	    cssT = 0;
+	    nodejsT = 0;
+	    mysqlT = 0;
+	    studentCnt = 0;
+
+	    document.getElementById('scoreInfoArea').innerHTML = "";
+	    document.getElementById('avgArea').innerHTML = "";
+      document.getElementById('bestScore').innerHTML = "";
+    });
+</script>
+</body>
+</html>

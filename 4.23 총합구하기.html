@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  숫자1 <input type="text" id="num1"> <br>
+  숫자2 <input type="text" id="num2"> <br>
+
+  <input type="button" value="계산" id="but">
+  <input type="button" value="Clear" id="Clear_but"> <br>
+
+
+  <span id="result"></span><br><br><br>
+  횟수 : <span id="count"></span> <br> <br>
+  총합 : <span id="sum_gogo"></span> <br> <br>
+  <input type="button" value="총합" id="sum_but"><br>
+  <span id="summ"></span> <br> <br>
+
+</body>
+<script>
+  // alert(1)
+  var cnt = 0;   // 전역변수 설정
+  var cntt = 0;
+  var cc = 0;
+  var sum = 0;
+  var E_sum = 0;
+  var O_sum = 0;
+
+  document.getElementById('but').addEventListener("click", function(){  // 계산버튼
+  cnt++;
+
+  var aa  = Number(document.getElementById('num1').value);
+  var bb  = Number(document.getElementById('num2').value);
+  cc = aa*bb
+
+    // document.getElementById('result').innerHTML += cc + "<br>"
+    document.getElementById('result').innerHTML += `${aa} x ${bb} = ${cc} <br>`;
+
+    document.getElementById('count').innerHTML = cnt;
+    if(sum==0){
+      document.getElementById('sum_gogo').innerHTML = cc;
+    }else {
+      document.getElementById('sum_gogo').innerHTML = sum+cc;
+    }
+
+    sum += cc
+
+    // alert(2)
+
+  });
+
+  document.getElementById('Clear_but').addEventListener('click' , function(){  // 클리어버튼
+      cnt = 0;
+      document.getElementById('count').innerHTML = cnt;
+      document.getElementById('sum_gogo').innerHTML = " ";
+      document.getElementById('result').innerHTML = " ";
+      document.getElementById('summ').innerHTML = " ";
+
+
+  });
+
+  document.getElementById('sum_but').addEventListener('click' , function(){    // 총합버튼
+
+    document.getElementById('summ').innerHTML = sum;
+
+  });
+
+</script>
+
+</html>

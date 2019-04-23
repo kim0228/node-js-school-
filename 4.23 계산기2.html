@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>계산기</title>
+<script>
+     var all = "";//모든함수에서쓸수있는전역변수
+     function add(num) {
+       all = all + num;
+       document.getElementById("display").value = all;
+     }
+     function sum() {
+       document.getElementById("display").value = eval(all);
+     }
+     function clearDisplay() {
+       all = "";
+       document.getElementById("display").value = "0";
+     }
+     function tan(all) {
+       all.value = Math.tan((all.value * 3.141592) / 180);
+     }
+     function sin(all) {
+       all.value = Math.sin((all.value * 3.141592) / 180);
+     }
+     function cos(all) {
+       all.value = Math.cos((all.value * 3.141592) / 180);
+     }
+     function abs(all) {
+       all.value = Math.abs(all.value);
+     }
+     function pow(all){
+       all.value = Math.pow(all.value,2);
+     }
+</script>
+</head>
+<body>
+<form>
+<table border ="1" >
+<tr>
+    <td colspan="5"><input type="text" id="display" size="50" value="0"></td>
+</tr>
+<tr>
+    <td colspan="2">
+    <input type="button" value="Clear" onclick="clearDisplay()" style="height:100%;width:100%;"></td>
+    <td colspan="3">
+    <input type="button" value="Enter" onclick="sum()" style="height:100%;width:100%;"></td>
+</tr>
+<tr>
+    <td><input type="button" value="1" onclick="add('1')" style="height:100%;width:100%;"></td>
+    <td><input type="button" value="2" onclick="add('2')" style="height:100%;width:100%;"></td>
+    <td><input type="button" value="3" onclick="add('3')" style="height:100%;width:100%;"></td>
+    <td><input type="button" value="+" onclick="add('+')" style="height:100%;width:100%;"></td>
+    <td><input type="button" value="tan" onclick="tan(this.form.display)" style="height:100%;width:100%;"></td>
+</tr>
+<tr>
+     <td><input type="button" value="4" onclick="add('4')" style="height:100%;width:100%;"></td>
+     <td><input type="button" value="5" onclick="add('5')" style="height:100%;width:100%;"></td>
+     <td><input type="button" value="6" onclick="add('6')" style="height:100%;width:100%;"></td>
+     <td><input type="button" value="-" onclick="add('-')" style="height:100%;width:100%;"></td>
+     <td><input type="button" value="sin" onclick="sin(this.form.display)" style="height:100%;width:100%;"></td>
+</tr>
+<tr>
+     <td><input type="button" value="7" onclick="add('7')" style="height:100%;width:100%;"></td>
+     <td><input type="button" value="8" onclick="add('8')" style="height:100%;width:100%;"></td>
+     <td><input type="button" value="9" onclick="add('9')" style="height:100%;width:100%;"></td>
+     <td><input type="button" value="*" onclick="add('*')" style="height:100%;width:100%;"></td>
+     <td><input type="button" value="cos" onclick="cos(this.form.display)" style="height:100%;width:100%;"></td>
+</tr>
+<tr>
+     <td><input type="button" value="0" onclick="add('0')" style="height:100%;width:100%;"></td>
+     <td><input type="button" value="+/-" onclick="abs(this.form.display)" style="height:100%;width:100%;"></td>
+     <td><input type="button" value="." onclick="add('.')" style="height:100%;width:100%;"></td>
+     <td><input type="button" value="/" onclick="add('/')" style="height:100%;width:100%;"></td>
+     <td><input type="button" value="x^y" onclick="pow(this.form.display)" style="height:100%;width:100%;"></td>
+<tr>
+</table>
+</form>
+</body>
+</html>

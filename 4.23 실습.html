@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<body>
+  숫자1<input type="text" id="num1"><br>
+  숫자2<input type="text" id="num2"><br>
+
+  <input type="button" value="계산" id="calcBtn"><br>
+  <span id="resultArea"></span><br><br><br>
+  횟수 : <span id="cntArea"></span>
+</body>
+<script>
+//alert(1)
+var cnt = 0; // 전역변수 설정한거임
+var gop = num1*num2;
+
+document.getElementById('calcBtn').addEventListener('click',function(){ // 계산버튼임
+
+  var num1 = Number(document.getElementById('num1').value);
+  var num2 = Number(document.getElementById('num2').value);
+  // document.getElementById('resultArea').innerHTML += gop + '<br>' 밑에랑 똑같이 되는 거다.
+  document.getElementById('resultArea').innerHTML += `${num1} x ${num2} = ${num1*num2}<br>`;
+
+  cnt++;
+  document.getElementById('cntArea').innerHTML = cnt;
+
+  });
+
+
+  // 별 차례차례씩 출력하기
+  // for(var i=0;i<5;i++){
+  //   var result = "";
+  //   for(var m=0;m<=i;m++)
+  //   result+="*";
+  //   document.write(result,"<br>");
+  // }
+  // console.log(result);
+  </script>
+</html>
