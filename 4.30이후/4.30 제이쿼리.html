@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+  이름 : <input type="text" id="name"><br>
+  html : <input type="text" id="html"><br>
+  javascript : <input type="text" id="javascript"><br>
+  css : <input type="text" id="css"><br>
+  nodejs : <input type="text" id="nodejs"><br>
+  mysql : <input type="text" id="mysql"><br>
+  <input type="button" value="성적입력" id="inputScoreBtn">
+  <input type="button" value="초기화" id="resetBtn">
+  <br><br>
+  <span id="scoreInfoArea"></span>
+  <br>
+  평균 : <span id="avgArea"></span><br>
+  최고점자 <span id="bestScore"></span>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+  var htmlT = 0, javascriptT = 0, cssT = 0, nodejsT = 0, mysqlT = 0, studentCnt = 0, bestAvg;
+  $("#inputScoreBtn").click(function(){
+    var name = $("#name").val();
+    var html = Number($("#html").val());
+    var javascript = Number($("#javascript").val());
+    var css = Number($("#css").val());
+    var nodejs = Number($("#nodejs").val());
+    var mysql = Number($("#mysql").val());
+    var avg = (html + javascript + css + nodejs + mysql)/5;
+
+    htmlT += html;  // htmlT = htmlT + html;
+    javascriptT += javascript;
+    cssT += css;
+    nodejsT += nodejs;
+    mysqlT += mysql;
+    studentCnt++;
+
+    var appendText = `이름 : ${name} / html : ${html} / js : ${javascript}
+    / css : ${css} / nodejs : ${nodejs} / mysql : ${mysql} / 평균 : ${avg}<br>`;
+    $("#scoreInfoArea").append(appendText);
+
+    var avgText = `html : ${htmlT/studentCnt}
+    / js : ${javascriptT/studentCnt} /
+    css : ${cssT/studentCnt} / nodejs : ${nodejsT/studentCnt}
+    / mysql : ${mysqlT/studentCnt}`;
+    $("#avgArea").html(avgText);
+
+
+    if(studentCnt==1) {
+        bestScore = avg;
+        $("#bestScore").html(`이름 : ${name} / 평균 : ${avg}`);
+      }
+      else if(avg>bestScore){
+        bestScore = avg;
+        $("#bestScore").html(`이름 : ${name} / 평균 : ${avg}`);
+      }
+
+      $("#name").val("");
+      $("#html").val("");
+      $("#javascript").val("");
+      $("#css").val("");
+      $("#nodejs").val("");
+      $("#mysql").val("");
+      $("#name").focus();
+  });
+
+      $("#resetBtn").click(function(){
+        htmlT = 0, javascript = 0, cssT = 0, nodejsT = 0, mysqlT = 0;
+        $("#name").val("");
+        $("#html").val("");
+        $("#javascript").val("");
+        $("#css").val("");
+        $("#nodejs").val("");
+        $("#mysql").val("");
+        $("#name").focus();
+
+        $("#scoreInfoArea").html("");
+        $("#avgArea").html("");
+        $("#bestScore").html("");
+      });
+  </script>
+</body>
+</html>

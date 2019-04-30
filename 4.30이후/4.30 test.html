@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<body>
+  <input type="text" id="num1">
+  <input type="text" id="num2">
+  <input type="text" id="num3">
+  <input type="button" value="곱하기" id="gopBtn"><br>
+  <span id="result"></span>
+</body>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+  $("#gopBtn").click(function(){
+
+
+  var num1 = Number($("#num1").val());  // 각 텍스트에 숫자를 입력받은 거를 각 변수에 넣는다.
+  var num2 = Number($("#num2").val());
+  var num3 = Number($("#num3").val());
+
+  $.ajax({
+    url: `http://localhost/sum?num1=${num1}&num2=${num2}&num3=${num3}`,  // num1=뒤에 있는 값은 파라미터이다.
+    data: {},
+    success:function(response){
+      console.log(response);     // 크롬 개발자 도구 콘솔에 찍힘!!
+    }
+
+  })
+
+  });
+</script>
+</html>

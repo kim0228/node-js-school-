@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<body>
+  <input type="text" id="price">
+  <input type="button" value="구매" id="buyBtn"><br>
+  <span id="result"></span>
+</body>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+$("#buyBtn").click(function(){
+
+  $.ajax({
+    url: `http://localhost/getitem?inputPrice=${$("#price").val()}`,
+    data: {},
+    success:function(data){
+    $("#result").html(data);
+    }
+  });
+
+  });
+</script>
+</html>

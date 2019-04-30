@@ -100,6 +100,10 @@ app.get('/mid', function (req, res) {
   res.sendfile("김성림_중간고사.html");
 });
 
+app.get('/jq', function (req, res) {
+  res.sendfile("4.30 제이쿼리.html");
+});
+
 
 
 console.log("running");
