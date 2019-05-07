@@ -21,13 +21,9 @@ app.get('/sum', function (req, res) {
   res.send(`gop is ${num1*num2*num3}`); // 4.30 test.html의 response로 돌아감
 });
 
-
-app.get('/sumform', function (req, res) {
-  res.sendfile("4.30 test.html");
-});
-
 app.get('/getitem', function (req, res) {
-  var userPrice = Number(req.query.inputPrice);
+  var userPrice = Number(req.query.price);
+  var resText = "구매불가";
   var priceTable =
   [{name:"item1", price:1000},
   {name:"item2", price:5000},
@@ -36,12 +32,12 @@ app.get('/getitem', function (req, res) {
   {name:"item5", price:50000},
   {name:"item6", price:100000},
   {name:"item7", price:500000}];
-  var resText = "구매불가";
   for (var i = 0; i<priceTable.length;i++){
     if(priceTable[i].price <= userPrice){
       resText = priceTable[i].name;
       }
   }
+  console.log(resText);
   res.send(resText);
 });
 
@@ -49,5 +45,23 @@ app.get('/itemform', function (req, res) {
   res.sendfile("4.30 실습.html");
 });
 
+app.get('/butt', function (req, res) {
+  res.sendfile("5.7 실습.html");
+});
 
+app.get('/car', function (req, res) {
+  res.sendfile("5.7 차종.html");
+});
+
+app.get('/getCarPrice', function (req, res) {
+  var carSelect = req.query.carSelect;
+  var colorSelect = req.query.colorSelect;
+  var carPrice = [2100,1300,1500,3500,3200];
+  var colorPrice = [100,120,200,130,80];
+  res.send(carPrice[carSelect] + colorPrice[colorSelect] + "만원");
+});
+
+app.get('/function', function (req, res) {
+  res.sendfile("5.7 함수.html");
+});
 console.log("running");

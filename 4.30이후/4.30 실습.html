@@ -16,9 +16,10 @@
 $("#buyBtn").click(function(){
 
   $.ajax({
-    url: `http://localhost/getitem?inputPrice=${$("#price").val()}`,
+    url: `http://localhost/getitem?price=${$("#price").val()}`,// <---- querystring임
     data: {},
     success:function(data){
+    console.log(data);
     $("#result").html(data);
     }
   });
