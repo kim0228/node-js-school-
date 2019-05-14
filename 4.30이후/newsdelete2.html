@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<body>
+  <input type="button" value="전체삭제" id="deleteBtn">
+</body>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type = "text/javascript">
+$("#deleteBtn").click(function(){
+
+  $.ajax({
+      url:`http://localhost/newList3`,
+      data:{
+    },
+    success:function(response){
+      console.log(response)
+      location.href="/newList"
+    }
+  });
+})
+</script>
+</html>

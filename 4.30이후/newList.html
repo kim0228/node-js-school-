@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<body>
+  제목: <input type="text" id="title">
+  <br>
+  내용: <input type="text" id="text">
+  <br>
+  <input type="button" value="글쓰기" id="writeBtn">
+  <input type="button" value="전체삭제" id="deleteAllNewsBtn"><br>
+  <span id="result1"></span>
+</body>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type = "text/javascript">
+
+    $.ajax({
+      url:`http://localhost/dbSelectTest`,
+      data:{
+
+      },
+      success:function(response){
+        $("#result1").html("");
+        for (var i = 0; i<response.length; i++){
+          var result = `${response[i].title} : ${response[i].text}`;
+          var no = response[i].no;
+          // $("#result1").append(result);  코드가 길어지니 변수에 넣음
+
+          //$("#result1").append(response[i].title, " : ", response[i].text, "<br>");
+          $("#result1").append(`${result} <input type="button" value="삭제" onclick="numberClick(${response[i].no})"><br>`);
+        }
+      }
+    });
+  function numberClick(number){
+    $.ajax({
+        url:`http://localhost/newList4`,
+        data:{
+        number:number
+      },
+      success:function(response){
+
+      }
+    });
+    location.href="/newList"
+  };
+
+
+   $("#writeBtn").click(function(){
+       $.ajax({
+           url:`http://localhost/newList2`,
+           data:{
+             title:$("#title").val(),
+             text:$("#text").val()
+         },
+         success:function(response){
+           console.log(response)
+           location.href="/newList"
+         }
+       });
+    });
+
+  $("#deleteAllNewsBtn").click(function(){
+
+  $.ajax({
+      url:`http://localhost/newList3`,
+      data:{
+
+    },
+    success:function(response){
+      location.href="/newsdel";
+    }
+  });
+});
+
+$("#deleteBtn").click(function(){
+    location.href="/newsdel"
+  });
+
+
+</script>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<body>
+  <input type="button" value="뉴스불러오기" id="testBtn">
+</body>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type = "text/javascript">
+$("#testBtn").click(function(){
+
+  $.ajax({
+    url:`http://localhost/dbSelectTest`,
+    data:{
+    },
+    success:function(response){
+      console.log(response);
+    }
+  });
+});
+</script>
+</html>

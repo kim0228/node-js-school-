@@ -64,4 +64,8 @@ app.get('/getCarPrice', function (req, res) {
 app.get('/function', function (req, res) {
   res.sendfile("5.7 함수.html");
 });
+
+
+
+
 console.log("running");
