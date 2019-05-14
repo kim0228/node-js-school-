@@ -48,7 +48,7 @@ app.get('/newList', function(req, res) {
   res.sendfile('newList.html');
 });
 
-// get방식일 때 데이터 삽입
+// post방식일 때 데이터 삽입
 app.post('/newList1', function(req, res) {
   var title = req.body.title;
   var text = req.body.text;
@@ -59,7 +59,7 @@ app.post('/newList1', function(req, res) {
   });
 });
 
-// post방식일 때 데이터 삽입
+// get방식일 때 데이터 삽입
 app.get('/newList2', function(req, res) {
   var title = req.query.title;
   var text = req.query.text;

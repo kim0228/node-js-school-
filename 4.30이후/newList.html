@@ -23,6 +23,7 @@
 
       },
       success:function(response){
+
         $("#result1").html("");
         for (var i = 0; i<response.length; i++){
           var result = `${response[i].title} : ${response[i].text}`;
@@ -67,7 +68,6 @@
   $.ajax({
       url:`http://localhost/newList3`,
       data:{
-
     },
     success:function(response){
       location.href="/newsdel";
