@@ -7,7 +7,9 @@
 <body>
   <span id="result"></span>
   <input type="button" value="삭제" id="deleteBtn1">
-  <input type="button" value="전체삭제" id="deleteBtn2">
+  <input type="button" value="전체삭제" id="deleteAllBtn">
+  <input type="button" value="수정" id="edit">
+
 </body>
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -25,7 +27,7 @@
         // $("#result1").append(result);  코드가 길어지니 변수에 넣음
 
         //$("#result1").append(response[i].title, " : ", response[i].text, "<br>");
-        $("#result").append(`${result} <input type="button" value="삭제" onclick="numberClick"(${response[i].no})><br>`);
+        //$("#result").append(`${result} <input type="button" value="삭제" onclick="numberClick"(${response[i].no})><br>`);
       }
     }
   });
@@ -38,7 +40,7 @@ $("#deleteBtn1").click(function(){
       data:{
     },
     success:function(response){
-        location.href="/newList"
+         location.href="/newList"
     }
   });
 })

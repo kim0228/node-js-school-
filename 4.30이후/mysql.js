@@ -63,7 +63,8 @@ app.post('/newList1', function(req, res) {
 app.get('/newList2', function(req, res) {
   var title = req.query.title;
   var text = req.query.text;
-  var selectQuery1 = `insert news (title,text) values("${title}","${text}")`;
+  var writer = req.query.writer;
+  var selectQuery1 = `insert news (writer, title, text) values("${writer}","${title}","${text}")`;
   connection.query(selectQuery1,
   function (err, rows, fields){
     res.send(rows);
@@ -75,7 +76,7 @@ app.get('/newwrite', function(req, res) {
   res.sendfile('newwrite.html');
 });
 
-// html에 테이블 값 입력
+// newList.html에 테이블에 입력한값이 화면에 나오게 함.
 app.get('/newswrite', function(req, res) {
   res.sendfile('newswrite.html');
 });
@@ -94,7 +95,8 @@ app.get('/newsdel', function(req, res) {
   res.sendfile('newsdelete.html');
 });
 
-// 삭제 버튼 눌러서 테이블 넘버 삭제
+
+// 삭제 버튼 눌러서 테이블 넘버에 해당되는 줄 삭제
 app.get('/newList4', function(req, res) {
   var number = req.query.number;
   var selectQuery2 = `delete from news where no='${number}'`;
@@ -103,6 +105,36 @@ app.get('/newList4', function(req, res) {
     res.send(rows);
   });
 });
+
+app.get('/update', function(req, res) {
+  res.sendfile('5.21 update.html');
+});
+
+// post방식으로 데이터 업데이트
+app.post('/edit', function(req, res) {
+  var no = req.body.no;
+  var writer = req.body.writer;
+  var title = req.body.title;
+  var text = req.body.text;
+  var updateQuery = `update news set writer="${writer}", title="${title}", text="${text}"
+  where no=${no}`;
+  connection.query(updateQuery,
+  function (err, rows, fields){
+    res.send(rows);
+  });
+});
+
+// 데이터 조회
+app.get('/getUpdateNews', function(req, res) {
+  var no = req.query.no;
+  var selectQuery = `select * from news where no=${no}`;
+  connection.query(selectQuery,
+  function (err, rows, fields){
+    res.send(rows);
+  })
+});
+
+
 
 
 

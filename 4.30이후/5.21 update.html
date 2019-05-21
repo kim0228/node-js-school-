@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  작성자: <input type="text" id="writer">
+  <br>
+  제목: <input type="text" id="title">
+  <br>
+  내용: <input type="text" id="text">
+  <br>
+  <input type="button" value="수정" id="update">
+  <input type="button" value="취소" id="cancel"><br>
+
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+// 엔터키를 치면 작성자에서 제목으로
+$("#writer").focus();
+$("#writer").keydown(function(key) {
+  if (key.keyCode == 13) {
+    $("#title").focus();
+  }
+});
+// 엔터키를 치면 제목에서 내용으로
+$("#title").keydown(function(key) {
+  if (key.keyCode == 13) {
+    $("#text").focus();
+  }
+});
+
+// 엔터키를 누르면 데이터가 수정되어서 newList.html파일로 넘어간다.
+$("#text").keydown(function(key) {
+  if (key.keyCode == 13) {
+    $("#update").click();
+    location.href = "/newList"
+  }
+});
+
+var no = location.href.split("?")[1];
+
+$.ajax({
+  url: `http://localhost/getUpdateNews`,
+  data: {
+    no: no,
+  },
+
+  success: function(response) {
+    $("#writer").val(response[0].writer);
+    $("#title").val(response[0].title),
+    $("#text").val(response[0].text);
+  }
+});
+
+
+$("#update").click(function() {
+  $.ajax({
+    url: `http://localhost/edit`,
+    type: 'POST',
+    data: {
+      no: no,
+      writer:$("#writer").val(),
+      title: $("#title").val(),
+      text: $("#text").val(),
+    },
+    success: function(response) {
+      console.log(response)
+      alert("수정성공")
+      location.href = "/newList"
+    }
+  });
+});
+
+$("#cancel").click(function() {
+  location.href = "/newList"
+})
+
+
+</script>
+</html>
