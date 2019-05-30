@@ -134,6 +134,92 @@ app.get('/getUpdateNews', function(req, res) {
   })
 });
 
+// ----------------------------------------------------------------------------------
+app.get('/flightList', function(req, res) {
+  res.sendfile('flightList.html');
+});
+
+app.get('/insertFlight', function(req, res) {
+  res.sendfile('insertFlight.html');
+});
+
+app.get('/insertAircraft', function(req, res) {
+  res.sendfile('insertAircraft.html');
+});
+
+
+app.get('/flightInsert', function(req, res) {
+  var flightName = req.query.flightName;
+  var aircraftCode = req.query.aircraftCode;
+  var departure = req.query.departure;
+  var arrival = req.query.arrival;
+  var departTime = req.query.departTime;
+  var arrivalTime = req.query.arrivalTime;
+  var insertQuery = `insert flight (flightName, aircraftCode, departure, arrival, departTime, arrivalTime)
+  values("${flightName}","${aircraftCode}","${departure}","${arrival}","${departTime}","${arrivalTime}")`;
+  connection.query(insertQuery,
+  function (err, rows, fields){
+    res.send(rows);
+  });
+});
+
+app.get('/aircraftInsert', function(req, res){
+  var aircraftCode = req.query.aircraftCode;
+  var aircraftName = req.query.aircraftName;
+  var seats = req.query.seats;
+  var insertQuery1 = `insert aircraft (aircraftCode, aircraftName, seats)
+  values("${aircraftCode}","${aircraftName}","${seats}")`;
+  connection.query(insertQuery1,
+    function (err, rows, fields){
+      res.send(rows);
+    })
+  });
+
+app.get('/flightSelect', function(req, res){
+  var joinQuery = `select * from flight a, aircraft b where a.aircraftCode = b.aircraftCode;`;
+  connection.query(joinQuery,
+  function (err, rows, fields){
+    res.send(rows);
+  })
+});
+
+app.get('/aircraftSelect', function(req, res){
+  var selectQuery1 = `select * from aircraft`;
+  connection.query(selectQuery1,
+    function (err, rows, fields){
+      res.send(rows);
+    })
+  });
+
+app.get('/flightDelete', function(req, res) {
+  var number = req.query.number;
+  var deleteQuery = `delete from flight where no='${number}'`;
+  connection.query(deleteQuery,
+    function (err, rows, fields){
+      res.send(rows);
+    });
+  });
+
+
+app.get('/aircraftDelete', function(req, res) {
+  var number = req.query.number;
+  var deleteQuery1 = `delete from aircraft where no='${number}'`;
+  connection.query(deleteQuery1,
+    function (err, rows, fields){
+      res.send(rows);
+    });
+  });
+
+
+
+// app.get('/flightInsert', function(req, res) {
+//   res.sendfile('flightList.html');
+// });
+//
+// app.get('/airInsert', function(req, res) {
+//   res.sendfile('flightList.html');
+// });
+
 
 
 

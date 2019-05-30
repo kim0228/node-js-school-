@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>항공편 리스트</title>
+</head>
+<body>
+    <span id="fullFlightListArea"></span><br><br>
+    <input type="button" value="항공편입력" id="moveToInsertFlightPageBtn">
+    <input type="button" value="항공기입력" id="moveToInsertAriacraftPageBtn">
+</body>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+
+  $.ajax({
+    url: `http://localhost/getFullFlightList`,
+    type: 'get',
+    data: {},
+    success: function(res) {
+      $("#fullFlightListArea").html("편명 / 항공기명 / 좌석수 / 출발지 / 목적지 / 출발시각 / 도착시각 <br><br>");
+      for(var i=0;i<res.length;i++) {
+        var f = res[i];
+        $("#fullFlightListArea").append(`${f.flightName} / ${f.aircraftName}
+          / ${f.seats} / ${f.departure} / ${f.arrival} / ${f.departTime} / ${f.arrivalTime}<br>`);
+      }
+    }
+  });
+
+	$("#moveToInsertFlightPageBtn").click(function(){
+    location.href = "/insertFlightPage";
+	});
+
+	$("#moveToInsertAriacraftPageBtn").click(function(){
+    location.href = "/insertAircraftPage";
+	});
+</script>
+</html>

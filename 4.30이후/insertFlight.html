@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>항공편 입력페이지</title>
+</head>
+<body>
+편명 / 항공코드 / 출발지 / 목적지 / 출발시각 / 도착시각<br>
+<span id="flightList"></span>
+<br>
+<br>
+편명: <input type="text" id="flightName"><br>
+항공코드: <input type="text" id="aircraftcode"><br>
+출발지: <input type="text" id="departure"><br>
+목적지: <input type="text" id="arrival"><br>
+출발시각: <input type="text" id="departime"><br>
+도착시각: <input type="text" id="arrivaltime"><br>
+<input type="button" id="insert" value="입력">
+<input type="button" id="cancel" value="취소">
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+$("#insert").click(function() {
+  $.ajax({
+    url: `http://localhost/flightInsert`,
+    data: {
+          flightName: $("#flightName").val(),
+          aircraftCode: $("#aircraftcode").val(),
+          departure: $("#departure").val(),
+          arrival: $("#arrival").val(),
+          departTime: $("#departime").val(),
+          arrivalTime: $("#arrivaltime").val(),
+    },
+    success: function(response) {
+        location.href = "/flightList"
+    }
+  });
+});
+
+$.ajax({
+  url: `http://localhost/flightSelect`,
+  data: {
+  },
+  success: function(response) {
+    for (var i = 0; i < response.length; i++) {
+      var result = `${response[i].flightName} / ${response[i].aircraftCode} / ${response[i].departure}
+      / ${response[i].arrival} / ${response[i].departTime}/ ${response[i].arrivalTime}`;
+      var no = response[i].no;
+      $("#flightList").append(`${result} <input type="button" value="삭제" onclick="numberClick(${no})"><br>`)
+    }
+  }
+});
+
+function numberClick(no){
+  $.ajax({
+    url: `http://localhost/flightDelete`,
+    data: {
+      number: no
+    },
+    success: function(response) {
+
+    }
+  });
+  location.href = "/insertFlight"
+};
+
+
+$("#cancel").click(function() {
+  location.href = "/flightList"
+});
+
+
+
+
+
+
+</script>
+</html>

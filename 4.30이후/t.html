@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <input type="text" id="number">
+  <input type="button" id="multi" value="배수증가">
+  <input type="button" id="timerStrt" value="타이머시작">
+  <input type="button" id="timerEnd" value="타이머종료">
+  <span id="timerArea"></span>
+  <br>
+  <span id="result"></span>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+var timer;
+var timerInterval;
+
+$("#multi").click(function() {
+  var num1 = Number($("#number").val());
+  var cnt = 0;
+  setTimeout(function() {
+    timer = setInterval(function(){
+    cnt++;
+    $("#result").append(num1 * cnt + "<br>")
+    }, 1000);
+  }, 3000);
+});
+
+
+$("#timerStrt").click(function() {
+  setTimeout(function(){
+    timerInterval = setInterval(function() {
+      timer++;
+      $("#timerArea").html(timer);
+    }, 1000)
+  }, 3000)
+});
+
+$("#timerEnd").click(function() {
+  setTimeout(function() {
+    clearInterval(timerInterval);
+  }, 3000);
+});
+</script>
+</html>

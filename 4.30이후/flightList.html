@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>항공편 리스트</title>
+</head>
+<body>
+편명 / 항공기명 / 좌석수 / 출발지 / 목적지 / 출발시각 / 도착시각<br>
+<span id="flightList"></span>
+<br>
+<br>
+<input type="button" id="flightInsert" value="항공편입력">
+<input type="button" id="aircraftInsert" value="항공기입력">
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+
+  $("#flightInsert").click(function() {
+    location.href = "/insertFlight"
+  });
+
+  $("#aircraftInsert").click(function() {
+    location.href = "/insertAircraft"
+  });
+
+  $.ajax({
+    url: `http://localhost/flightSelect`,
+    data: {
+
+    },
+    success: function(response) {
+
+      $("#flightList").html("");
+      for (var i = 0; i < response.length; i++) {
+        var result = `${response[i].flightName} / ${response[i].aircraftName} / ${response[i].seats}/ ${response[i].departure}
+        / ${response[i].arrival}/ ${response[i].departTime}/ ${response[i].arrivalTime}`;
+        // var no = response[i].no;
+        // $("#result1").append(result);  코드가 길어지니 변수에 넣음
+
+        //$("#result1").append(response[i].title, " : ", response[i].text, "<br>");
+        $("#flightList").append(`${result}<br>`)
+      }
+    }
+  });
+
+  $.ajax({
+    url: `http://localhost/join`,
+    data: {
+    },
+    success: function(response) {
+      for (var i = 0; i < response.length; i++) {
+        var result = `${response[i].flightName} / ${response[i].aircraftName} / ${response[i].seats} / ${response[i].departure}
+        / ${response[i].arrival}/ ${response[i].departTime}/ ${response[i].arrivalTime}`;
+        var no = response[i].no;
+        $("#flightList").append(`${result}<br>`)
+      }
+    }
+  });
+
+
+
+</script>
+</html>

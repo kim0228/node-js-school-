@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>항공편 입력페이지</title>
+</head>
+<body>
+    <span id="flightListArea"></span><br>
+    편명 : <input type="text" id="flightName"><br>
+    항공코드 : <input type="text" id="aircraftCode"><br>
+    출발지 : <input type="text" id="departure"><br>
+    목적지 : <input type="text" id="arrival"><br>
+    출발시각 : <input type="text" id="departTime"><br>
+    도착시각 : <input type="text" id="arrivalTime"><br>
+    <input type="button" value="입력" id="insertFlightBtn">
+    <input type="button" value="취소" id="cancelBtn">
+</body>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+	$.ajax({
+		url: `/getFlightList`,
+    type: 'get',
+		data: {},
+		success:function(res){
+      $("#flightListArea").html("편명 / 항공코드 /출발지 / 목적지 / 출발시각 / 도착시각 <br><br>");
+      for(var i=0;i<res.length;i++) {
+        var f = res[i];
+        $("#flightListArea").append(`${f.flightName} / ${f.aircraftCode}
+          / ${f.departure} / ${f.arrival} / ${f.departTime} / ${f.arrivalTime}
+          <input type="button" value="삭제" onclick="deleteFlight(${f.no})"><br>`);
+      }
+		}
+	});
+
+	$("#insertFlightBtn").click(function(){
+		$.ajax({
+			url:`/insertFlight`,
+      type: 'post',
+			data: {
+        flightName: $("#flightName").val(),
+        aircraftCode: $("#aircraftCode").val(),
+        departure: $("#departure").val(),
+        arrival: $("#arrival").val(),
+        departTime: $("#departTime").val(),
+        arrivalTime: $("#arrivalTime").val(),
+      },
+			success:function(res){
+        location.href = "/flightListPage";
+			}
+		});
+	});
+
+  function deleteFlight(no) {
+		$.ajax({
+			url:`/deleteFlight`,
+      type: 'post',
+			data: {
+        no: no
+      },
+			success:function(res){
+        location.href = "/insertFlightPage";
+			}
+		});
+  }
+
+	$("#cancelBtn").click(function(){
+    location.href = "/flightListPage";
+	});
+</script>
+</html>

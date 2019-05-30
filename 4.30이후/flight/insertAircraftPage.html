@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>항공기 입력페이지</title>
+</head>
+<body>
+    <span id="aricraftListArea"></span><br>
+    항공코드 : <input type="text" id="aircraftCode"><br>
+    항공기명 : <input type="text" id="aircraftName"><br>
+    좌석수 : <input type="text" id="seats"><br>
+    <input type="button" value="입력" id="insertAricraftBtn">
+    <input type="button" value="취소" id="cancelBtn">
+</body>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+	$.ajax({
+		url: `/getAircraftList`,
+    type: 'get',
+		data: {},
+		success:function(res){
+      $("#aricraftListArea").html("항공코드 / 항공기명 /좌석수 <br><br>");
+      for(var i=0;i<res.length;i++) {
+        var f = res[i];
+        $("#aricraftListArea").append(`${f.aircraftCode} / ${f.aircraftName} / ${f.seats}
+          <input type="button" value="삭제" onclick="deleteAircraft(${f.no})"><br>`);
+      }
+		}
+	});
+
+	$("#insertAricraftBtn").click(function(){
+		$.ajax({
+			url:`/insertAircraft`,
+      type: 'post',
+			data: {
+        aircraftCode: $("#aircraftCode").val(),
+        aircraftName: $("#aircraftName").val(),
+        seats: $("#seats").val(),
+      },
+			success:function(res){
+        location.href = "/flightListPage";
+			}
+		});
+	});
+
+  function deleteAircraft(no) {
+		$.ajax({
+			url:`/deleteAircraft`,
+      type: 'post',
+			data: {
+        no: no
+      },
+			success:function(res){
+        location.href = "/insertAircraftPage";
+			}
+		});
+  }
+
+	$("#cancelBtn").click(function(){
+    location.href = "/flightListPage";
+	});
+</script>
+</html>

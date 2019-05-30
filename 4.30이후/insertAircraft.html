@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>항공기 입력페이지</title>
+</head>
+<body>
+항공코드 / 항공기명 / 좌석수<br>
+<span id="flightList"></span>
+<br>
+<br>
+항공코드: <input type="text" id="aircraftcode"><br>
+항공기명: <input type="text" id="aircraftname"><br>
+좌석수: <input type="text" id="seats"><br>
+<input type="button" id="aircraftInsert1" value="입력">
+<input type="button" id="cancel" value="취소">
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+$("#aircraftInsert1").click(function() {
+  $.ajax({
+    url: `http://localhost/aircraftInsert`,
+    data: {
+      aircraftCode: $("#aircraftcode").val(),
+      aircraftName: $("#aircraftname").val(),
+      seats: $("#seats").val(),
+    },
+    success: function(response) {
+      location.href = "/flightList"
+    }
+  });
+});
+
+$.ajax({
+  url: `http://localhost/aircraftSelect`,
+  data: {
+  },
+  success: function(response) {
+    for (var i = 0; i < response.length; i++) {
+      var result = `${response[i].aircraftCode} / ${response[i].aircraftName} / ${response[i].seats}`;
+      var no = response[i].no;
+      $("#flightList").append(`${result} <input type="button" value="삭제" onclick="numberClick(${no})"><br>`)
+    }
+  }
+});
+
+function numberClick(no){
+  $.ajax({
+    url: `http://localhost/aircraftDelete`,
+    data: {
+      number: no
+    },
+    success: function(response) {
+    }
+  });
+  location.href = "/insertAircraft"
+};
+
+
+$("#cancel").click(function() {
+  location.href = "/flightList"
+});
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</html>
