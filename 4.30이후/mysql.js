@@ -3,6 +3,8 @@ var http = require('http');
 var app = express();
 var server = http.createServer(app).listen(80);
 var mysql = require('mysql');
+var request = require('request');
+
 
 var bodyparser = require("body-parser");
 app.use(bodyparser.urlencoded({
@@ -210,7 +212,53 @@ app.get('/aircraftDelete', function(req, res) {
     });
   });
 
+app.get('/requestTest', function(req, res) {
+  request.get('https://polling.finance.naver.com/api/realtime.nhn?query=SERVICE_ITEM:018260|SERVICE_RECENT_ITEM:018260,005930', function(err, response, body) {
+    body = JSON.parse(body);
+    //res.send(body);
+    a = body.result.areas[0].datas[1]+""
+    res.send(a);
+    console.log(a);
+  });
+});
 
+app.get('/ajax', function(req, res) {
+  res.sendfile('ajax.html');
+});
+
+// html파일로 요청을 보내서 응답을 받는 방식
+app.get('/stockInfo', function(req, res) {
+  request.get(`https://polling.finance.naver.com/api/realtime.nhn?query=
+  SERVICE_ITEM:018260|SERVICE_RECENT_ITEM:018260,005930`, function(err, response, body) {
+  body = JSON.parse(body);
+  var price = body.result.areas[0].datas[0].cv+""
+  var insertQuery = `insert time (price) values("${price}")`;
+  connection.query(insertQuery,
+  function (err,rows,fields){
+  res.send(rows);
+  });
+  });
+});
+
+// html파일없이 서버가 시작하자마자 바로 요청을 보내서 응답을 받는 방식
+// setInterval(function() {
+//   request.get(`https://polling.finance.naver.com/api/realtime.nhn?query=
+//     SERVICE_ITEM:018260|SERVICE_RECENT_ITEM:018260,005930`, function(err, response, body) {
+//       body = JSON.parse(body);
+//       var price = body.result.areas[0].datas[0].nv+""
+//       var insertQuery = `insert into time (price) values("${price}")`;
+//       connection.query(insertQuery,
+//         function (err,rows,fields){
+//           if (err) throw err;
+//         });
+//       });
+// }, 10000);
+
+
+
+app.get('/chart', function (req, res) {
+  res.sendfile("chart.html");
+});
 
 // app.get('/flightInsert', function(req, res) {
 //   res.sendfile('flightList.html');
@@ -219,8 +267,6 @@ app.get('/aircraftDelete', function(req, res) {
 // app.get('/airInsert', function(req, res) {
 //   res.sendfile('flightList.html');
 // });
-
-
 
 
 

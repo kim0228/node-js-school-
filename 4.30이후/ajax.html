@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<body>
+  <input type="button" id="ajaxButton" value="price">
+  <br>
+  <span id="result"></span>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+  $('#ajaxButton').click(function() {  // setTimeout함수는 안에 있는 함수를 일정시간 후에 실행시킨다.
+    setInterval(function(){  // setInterval함수는 안에 있는 함수를 일정시간마다 계~~속 실행시킨다.
+      $.ajax({        // clearInterval는 setInterval함수로 반복하고 있는걸 멈추게 한다.
+        url:`/stockInfo`,
+        data:{
+
+        },
+        success: function(res){
+          console.log(res);
+        }
+      })
+    }, 1000);
+    });
+</script>
+</html>

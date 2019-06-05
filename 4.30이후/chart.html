@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<title></title>
+</head>
+<body>
+<input type="button" id="drawGraphBtn" value="그리기">
+<div id="chart_div"></div>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+  var arr = [];
+$("#drawGraphBtn").click(function() {
+  google.charts.load('current', {packages: ['corechart', 'line']});
+  google.charts.setOnLoadCallback(drawCurveTypes);
+  for (var i = 0; i < 10; i++) {
+    var b = Math.floor(Math.random()*11)
+    var c = Math.floor(Math.random()*11)
+    var d = Math.floor(Math.random()*11)
+    arr[i] = [i,b,c,d];
+    // 배열안에 데이터를 넣을 때 push를 쓰는 방법도 있다.
+    // arr.push([i, Math.floor(Math.random()*11), Math.floor(Math.random()*11), Math.floor(Math.random()*11)])
+  }
+});
+    function drawCurveTypes() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('number', 'X');  // x축을 정의하는 줄
+      data.addColumn('number', 'Dogs'); // y축
+      data.addColumn('number', 'Cats'); // y축
+      data.addColumn('number', 'Cows'); // y축
+
+      data.addRows(arr);
+
+      var options = {
+        hAxis: {
+          title: 'Time'
+        },
+        vAxis: {
+          title: 'Popularity'
+        },
+        series: {
+          1: {curveType: 'none'}
+        }
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+    }
+</script>
+</html>

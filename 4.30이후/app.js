@@ -65,6 +65,10 @@ app.get('/function', function (req, res) {
   res.sendfile("5.7 함수.html");
 });
 
+app.get('/chart', function (req, res) {
+  res.sendfile("chart.html");
+});
+
 
 
 
