@@ -268,7 +268,29 @@ app.get('/chart', function (req, res) {
 //   res.sendfile('flightList.html');
 // });
 
-
+app.get('/reqq', function(req, res){
+  request.get(`https://polling.finance.naver.com/api/realtime.nhn?query=
+    SERVICE_ITEM:280360|SERVICE_RECENT_ITEM:280360`, function(err, response, body){
+     body = JSON.parse(body);
+     var price = body.result.areas[0].datas[0].nv; //배열에서 찾아가기
+     console.log(price)
+     var insertQuery = `INSERT INTO ajax(price) VALUES (${price});`;
+     // `마리아DB에 생성한 테이블 이름(쿼리) value's' (${쿼리})`
+     // time은 자동생성이고, 내가 가져올 웹에서 가져올 정보가 price라서 저기에 price적는거
+     console.log(insertQuery); // insertQuery를 출력해주세요
+      connection.query(insertQuery, function(err, rows, fields) {
+        //쿼리에 내가 응답받은 정보를 넣을거야(insert)
+        if (err) throw err; //에러가 있으면 에러메세지를 띄워주세요
+        var selectQuery = `SELECT * FROM ajax`;
+         connection.query(selectQuery, function(err, rows, fields) {
+           //쿼리를 연결해서 값을 넣어주겠다.
+           //두번째 인자에 배열로 된 값을 넣어줄 수 있다.
+           if (err) throw err;
+           res.send(rows) //insert를 한 다음에 정보가 들어있는 rows를 보낸다.
+         })
+      })
+    });
+});
 
 
 // app.get('/dbSelect', function(req, res) {
