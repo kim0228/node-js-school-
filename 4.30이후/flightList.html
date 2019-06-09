@@ -40,23 +40,20 @@
       }
     }
   });
-
-  $.ajax({
-    url: `http://localhost/flightSelect`,
-    data: {
-    },
-    success: function(response) {
-      $("#flightList").html("");
-      for (var i = 0; i < response.length; i++) {
-        var result = `${response[i].flightName} / ${response[i].aircraftName} / ${response[i].seats} / ${response[i].departure}
-        / ${response[i].arrival}/ ${response[i].departTime}/ ${response[i].arrivalTime}`;
-        var no = response[i].no;
-        $("#flightList").append(`${result}<br>`)
-      }
-    }
-  });
-
-
-
 </script>
 </html>
+
+  // $.ajax({
+  //   url: `http://localhost/flightSelect`,
+  //   data: {
+  //   },
+  //   success: function(response) {
+  //     $("#flightList").html("");
+  //     for (var i = 0; i < response.length; i++) {
+  //       var result = `${response[i].flightName} / ${response[i].aircraftName} / ${response[i].seats} / ${response[i].departure}
+  //       / ${response[i].arrival}/ ${response[i].departTime}/ ${response[i].arrivalTime}`;
+  //       var no = response[i].no;
+  //       $("#flightList").append(`${result}<br>`)
+  //     }
+  //   }
+  // });

@@ -267,6 +267,11 @@ app.get('/chart', function (req, res) {
 // app.get('/airInsert', function(req, res) {
 //   res.sendfile('flightList.html');
 // });
+// --------------------------------------------------------------------------------------------
+app.get('/html', function (req, res) {
+  res.sendfile("ajax_test.html");
+});
+
 
 app.get('/reqq', function(req, res){
   request.get(`https://polling.finance.naver.com/api/realtime.nhn?query=
