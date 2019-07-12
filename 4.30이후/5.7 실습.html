@@ -24,29 +24,20 @@
     return `your input was ${a} and ${b}` // return을 받는 순간 함수는 사라지고 결과값만 남아서 콘솔에 출력한다.
   }
 
+  $("#buyBtn").click(function(){
+    if ($("#selectBox").val()==1) {
+      showMsg("개");
+    }
+    else if ($("#selectBox").val()==2) {
+      showMsg("닭");
+    }
+    else if ($("#selectBox").val()==3) {
+      showMsg("돼지");
+    }
+    else if ($("#selectBox").val()==4) {
+      showMsg("소");
+    }
+
+    });
 </script>
 </html>
-
-
-
-
-
-
-
-
-
-<!-- // $("#buyBtn").click(function(){
-//   if ($("#selectBox").val()==1) {
-  //     showMsg("개");
-//   }
-  //   else if ($("#selectBox").val()==2) {
-    //     showMsg("닭");
-    //   }
-  //   else if ($("#selectBox").val()==3) {
-  //     showMsg("돼지");
-    //   }
-  //   else if ($("#selectBox").val()==4) {
-      //     showMsg("소");
-      //   }
-      //
-      //   }); -->
