@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <select id="sel">
+  </select>
+  <br>
+  제목: <input type="text" value="" id="title">
+  <br>
+  내용: <textarea name="name" rows="8" cols="80" id="text"></textarea>
+  <br>
+  <input type="button" value="수정하기" id="update">
+  <br>
+  <input type="button" value="뒤로" id="back">
+  <br>
+</body>
+<span id="testList"></span>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+
+  $.ajax({
+    url:`http://localhost/currentSelect`,
+    data:{
+    },
+    success:function(response){
+      for(var i = 0;i<response.length;i++){
+        var title = `${response[i].title}`;
+        var text = `${response[i].text}`;
+        var no = response[i].no;
+        $("#sel").append(`<option value="${no}">${no}</option>`)
+
+      }
+    }
+  });
+
+  $("#update").click(function(){
+    $.ajax({
+      url:`http://localhost/update`,
+      data:{
+          no: $("#sel").val(),
+          title: $("#title").val(),
+          text: $("#text").val(),
+      },
+      success:function(response){
+        console.log(response);
+      }
+    })
+  });
+
+  $("#back").click(function() {
+    location.href = "/form"
+  });
+
+</script>
+</html>

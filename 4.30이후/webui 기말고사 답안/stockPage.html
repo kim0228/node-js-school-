@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+<body>
+    <select name="" id="stockCode">
+        <option value="005930">삼성전자</option>
+        <option value="066570">LG전자</option>
+        <option value="005380">현대차</option>
+        <option value="000660">sk하이닉스</option>
+        <option value="023530">롯데쇼핑</option>
+    </select>
+    <input type="button" value="시작" id="startBtn">
+    경과시간 : <span id="time"></span>초
+    <br>
+    <br>
+    <br>
+    <span id="stockName"></span><br>
+    <div id="chart_div"></div>
+</body>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+    var interval, time = 0;
+    let prices;
+
+    let changeIdx=0;
+    let valArr = ["005930", "066570", "005380", "000660", "023530"];
+    setInterval(function(){
+        $("#stockCode").val(valArr[changeIdx%5]).trigger('change');
+        $("#startBtn").click();
+        changeIdx++;
+    }, 20000);
+
+    setInterval(function(){
+    	time++;
+    	$("#time").html(time);
+    }, 1000);
+
+	$("#startBtn").click(function(){
+    let stockCode = $("#stockCode").val();
+    let stockName;
+    if($("#stockCode").val()=="005930") {
+      stockName = "삼성전자";
+    }
+    if($("#stockCode").val()=="066570") {
+      stockName = "LG전자";
+    }
+    if($("#stockCode").val()=="005380") {
+      stockName = "현대차";
+    }
+    if($("#stockCode").val()=="000660") {
+      stockName = "sk하이닉스";
+    }
+    if($("#stockCode").val()=="023530") {
+      stockName = "롯데쇼핑";
+    }
+		prices = [];
+		clearInterval(interval);
+		interval = setInterval(function(){
+			$.ajax({
+				url:`/getStockValue`,
+				data: {
+					stockCode : stockCode
+        },
+				success:function(res){
+					if(prices.length > 10) {
+						prices.splice(0, 1);
+          }
+					prices.push([time, res.result.areas[0].datas[0].nv]);
+					google.charts.load('current', {packages: ['corechart', 'line']});
+					google.charts.setOnLoadCallback(drawBasic);
+          $("#stockName").html(stockName);
+				}
+			});
+    }, 1000);
+	});
+
+    function drawBasic() {
+
+	    var data = new google.visualization.DataTable();
+	    data.addColumn('number', '시간');
+	    data.addColumn('number', '가격');
+
+	    data.addRows(prices);
+
+	    var options = {
+		    hAxis: {
+			    title: 'Time'
+		    },
+		    vAxis: {
+			    title: 'Popularity'
+		    }
+	    };
+
+	    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+	    chart.draw(data, options);
+    }
+</script>
+</html>
