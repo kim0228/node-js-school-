@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <title></title>
 </head>
+<<<<<<< HEAD
 <body>
   <input type="button" id="ajaxBtn" value="ajax">
   <input type="button" id="resetBtn" value="스톱">
@@ -23,6 +24,18 @@
   var maxValue;
   $("#ajaxBtn").click(function() {
     //초당 자동 생성
+=======
+
+<body>
+  <input type="button" id="ajaxBtn" value="ajax"><br>
+  <span id="testArea"></span>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+
+  $("#ajaxBtn").click(function() {
+     setInterval(function(){ //초당 자동 생성
+>>>>>>> 23a7d6cec40fe728332fc6f46516559775ddc67e
       $.ajax({
         url: '/reqq',
         data: {},
@@ -32,6 +45,7 @@
             var priecNum = response[i].price;
             $("#testArea").append(`${response[i].price}/${response[i].time}<br>`);
             //가격이라는 쿼리는 key:vlaue인 딕셔너리 형태가 들어있는 배열이기 때문에 어떤 쿼리에 어떤 밸류를 지정해줘야지 제대로 나온다.
+<<<<<<< HEAD
           }
         }
       });
@@ -124,4 +138,14 @@
     chart.draw(data, options);
   }
 </script>
+=======
+
+          }
+        }
+      });
+    }, 2000) //1000대는 1초대 10000은 10초대
+  });
+</script>
+
+>>>>>>> 23a7d6cec40fe728332fc6f46516559775ddc67e
 </html>

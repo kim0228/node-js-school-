@@ -211,7 +211,7 @@ app.get('/aircraftDelete', function(req, res) {
       res.send(rows);
     });
   });
-// ------------------------------------------------------------------------------------
+
 app.get('/requestTest', function(req, res) {
   request.get('https://polling.finance.naver.com/api/realtime.nhn?query=SERVICE_ITEM:018260|SERVICE_RECENT_ITEM:018260,005930', function(err, response, body) {
     body = JSON.parse(body);
@@ -255,47 +255,11 @@ app.get('/stockInfo', function(req, res) {
 // }, 10000);
 
 
-// 수업시간에 한 거------------------------------------------------------------------
+
 app.get('/chart', function (req, res) {
   res.sendfile("chart.html");
 });
-// ----------------------------------------------------------------------
 
-// 내가 직접 해본파일
-app.get('/test', function (req, res) {
-  res.sendfile("ajax_test.html");
-});
-
-app.get('/chart1', function (req, res) {
-  res.sendfile("ajax_chart.html");
-});
-
-// 데이터 삽입 및 조회 쿼리(ajax_chart)
-app.get('/reqq1', function(req, res){
-  request.get(`https://polling.finance.naver.com/api/realtime.nhn?query=
-    SERVICE_ITEM:018260|SERVICE_RECENT_ITEM:018260`, function(err, response, body){
-     body = JSON.parse(body);
-     var price = body.result.areas[0].datas[0].nv + "" //배열에서 찾아가기
-     console.log(price)
-     var insertQuery = `INSERT INTO samsungsds(price) VALUES (${price});`;
-     // `마리아DB에 생성한 테이블 이름(쿼리) value's' (${쿼리})`
-     // time은 자동생성이고, 내가 가져올 웹에서 가져올 정보가 price라서 저기에 price적는거
-     // console.log(insertQuery); // insertQuery를 출력해주세요
-      connection.query(insertQuery, function(err, rows, fields) {
-        //쿼리에 내가 응답받은 정보를 넣을거야(insert)
-        if (err) throw err; //에러가 있으면 에러메세지를 띄워주세요
-        var selectQuery = `SELECT * FROM samsungsds`;
-         connection.query(selectQuery, function(err, rows, fields) {
-           //쿼리를 연결해서 값을 넣어주겠다.
-           //두번째 인자에 배열로 된 값을 넣어줄 수 있다.
-           if (err) throw err;
-           res.send(rows) //insert를 한 다음에 정보가 들어있는 rows를 보낸다.
-         })
-      })
-    });
-});
-
-// 데이터 삽입 및 조회 쿼리(ajax_test)
 app.get('/reqq', function(req, res){
   request.get(`https://polling.finance.naver.com/api/realtime.nhn?query=
     SERVICE_ITEM:280360|SERVICE_RECENT_ITEM:280360`, function(err, response, body){
@@ -319,107 +283,6 @@ app.get('/reqq', function(req, res){
       })
     });
 });
-// ajax_test
-app.get('/dataDelete', function(req, res) {
-  // var number = req.query.number;
-  var deleteQuery = `delete from ajax`;
-  connection.query(deleteQuery,
-    function (err, rows, fields){
-      res.send(rows);
-    });
-  });
-
-// ajax_chart
-app.get('/chartdelete', function(req, res) {
-  // var number = req.query.number;
-  var deleteQuery = `delete from samsungsds`;
-  connection.query(deleteQuery,
-    function (err, rows, fields){
-      res.send(rows);
-    });
-  });
-
-
-// 기말고사------------------------------------------------------------------------------
-
-app.get('/final', function (req, res) {
-  res.sendfile("김성림 기말고사.html");
-});
-  // 삼성전자
-  app.get('/samsungelec', function(req, res) {
-    request.get(`https://polling.finance.naver.com/api/realtime.nhn?query=
-      SERVICE_ITEM:005930|SERVICE_RECENT_ITEM:005930,018260,009540,035720`, function(err, response, body) {
-    body = JSON.parse(body);
-    var price = body.result.areas[0].datas[0].nv + ""
-    console.log(price)
-    var insertQuery = `insert samsungelectronic (price) values("${price}")`;
-    connection.query(insertQuery,
-    function (err,rows,fields){
-    res.send(rows);
-    });
-    });
-  });
-
-  app.get('/hyundai', function(req, res) {
-    request.get(`https://polling.finance.naver.com/api/realtime.nhn?query=
-      SERVICE_ITEM:009540|SERVICE_RECENT_ITEM:009540,005930,035720,018260`, function(err, response, body) {
-    body = JSON.parse(body);
-    var price = body.result.areas[0].datas[0].nv + ""
-    // var insertQuery = `insert hyundai (price) values("${price}")`;
-    connection.query(insertQuery,
-    function (err,rows,fields){
-    res.send(rows);
-    });
-    });
-  });
-
-  // 삼성sds
-  app.get('/samsungsds', function(req, res) {
-    request.get(`https://polling.finance.naver.com/api/realtime.nhn?query=
-      SERVICE_ITEM:018260|SERVICE_RECENT_ITEM:018260,009150,035720,005930,009540`, function(err, response, body) {
-    body = JSON.parse(body);
-    var price = body.result.areas[0].datas[0].nv + ""
-    // var insertQuery = `insert hyundai (price) values("${price}")`;
-    connection.query(insertQuery,
-    function (err,rows,fields){
-    res.send(rows);
-    });
-    });
-  });
-
-  app.get('/kakao', function(req, res) {
-    request.get(`https://polling.finance.naver.com/api/realtime.nhn?query=
-    SERVICE_ITEM:035720|SERVICE_RECENT_ITEM:035720,009150,005930,018260,009540`, function(err, response, body) {
-    body = JSON.parse(body);
-    var price = body.result.areas[0].datas[0].nv + ""
-    // var insertQuery = `insert hyundai (price) values("${price}")`;
-    connection.query(insertQuery,
-    function (err,rows,fields){
-    res.send(rows);
-    });
-    });
-  });
-
-
-
-  // 삼성전기
-  app.get('/samsung', function(req, res) {
-    request.get(`https://polling.finance.naver.com/api/realtime.nhn?query=
-    SERVICE_ITEM:009150|SERVICE_RECENT_ITEM:009150,005930,018260,009540,035720`, function(err, response, body) {
-    body = JSON.parse(body);
-    var price = body.result.areas[0].datas[0].nv + ""
-    console.log(price)
-    });
-  });
-
-
-
-
-
-
-
-
-
 
 // app.get('/flightInsert', function(req, res) {
 //   res.sendfile('flightList.html');
@@ -428,35 +291,8 @@ app.get('/final', function (req, res) {
 // app.get('/airInsert', function(req, res) {
 //   res.sendfile('flightList.html');
 // });
-// --------------------------------------------------------------------------------------------
-app.get('/html', function (req, res) {
-  res.sendfile("ajax_test.html");
-});
 
 
-app.get('/reqq', function(req, res){
-  request.get(`https://polling.finance.naver.com/api/realtime.nhn?query=
-    SERVICE_ITEM:280360|SERVICE_RECENT_ITEM:280360`, function(err, response, body){
-     body = JSON.parse(body);
-     var price = body.result.areas[0].datas[0].nv; //배열에서 찾아가기
-     console.log(price)
-     var insertQuery = `INSERT INTO ajax(price) VALUES (${price});`;
-     // `마리아DB에 생성한 테이블 이름(쿼리) value's' (${쿼리})`
-     // time은 자동생성이고, 내가 가져올 웹에서 가져올 정보가 price라서 저기에 price적는거
-     console.log(insertQuery); // insertQuery를 출력해주세요
-      connection.query(insertQuery, function(err, rows, fields) {
-        //쿼리에 내가 응답받은 정보를 넣을거야(insert)
-        if (err) throw err; //에러가 있으면 에러메세지를 띄워주세요
-        var selectQuery = `SELECT * FROM ajax`;
-         connection.query(selectQuery, function(err, rows, fields) {
-           //쿼리를 연결해서 값을 넣어주겠다.
-           //두번째 인자에 배열로 된 값을 넣어줄 수 있다.
-           if (err) throw err;
-           res.send(rows) //insert를 한 다음에 정보가 들어있는 rows를 보낸다.
-         })
-      })
-    });
-});
 
 
 // app.get('/dbSelect', function(req, res) {

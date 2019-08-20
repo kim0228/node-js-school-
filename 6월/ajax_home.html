@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<!--롯데 주식정보 가져오기-->
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <input type="button" id="ajaxBtn" value="ajax"><br>
+  <span id="testArea"></span>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+
+  $("#ajaxBtn").click(function() {
+     setInterval(function(){ //초당 자동 생성
+      $.ajax({
+        url: '/reqq',
+        data: {},
+        success: function(response) {
+          $("#testArea").html("");
+          for (var i = 0; i< response.length; i++) {
+            var priecNum = response[i].price;
+            $("#testArea").append(`${response[i].price}/${response[i].time}<br>`);
+            //가격이라는 쿼리는 key:vlaue인 딕셔너리 형태가 들어있는 배열이기 때문에 어떤 쿼리에 어떤 밸류를 지정해줘야지 제대로 나온다.
+
+          }
+        }
+      });
+    }, 4000) //1000대는 1초대 10000은 10초대
+  });
+</script>
+
+</html>
