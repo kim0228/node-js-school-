@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <span id="List"></span>
+  <input type="button" value="글쓰기"id="write">
+  <br>
+</body>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+
+
+  $("#write").click(function() {
+    location.href='/create'
+  });
+
+  // $("#delete").click(function(){
+  //   $.ajax({
+  //     url:`http://localhost/delete`,
+  //     data:{
+  //       number:$("#number").val(),
+  //     },
+  //     success:function(response){
+  //       console.log(response);
+  //     }
+  //   })
+  // });
+
+  // $("#update").click(function() {
+  //   location.href = "/updateform"
+  // });
+
+  $.ajax({
+    url:`http://localhost/read`,
+    data:{
+
+    },
+    success:function(response){
+      $("#List").html("");
+      for(var i = 0;i<response.length;i++){
+        var result = `${response[i].no} ${response[i].title}`;
+        $("#List").append(`${result}<br>`)
+      }
+    }
+  })
+
+
+</script>
+</html>

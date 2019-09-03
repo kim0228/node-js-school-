@@ -60,6 +60,7 @@ app.get('/select', function(req, res){
   var selectQuery = `select * from post`;
   connection.query(selectQuery,
   function (err, rows, fields){
+    if (err) throw err;
     res.send(rows);
   })
 });
@@ -88,7 +89,53 @@ app.get('/update', function(req, res){
 app.get('/updateform', function(req, res) {
   res.sendfile('updateform.html')
 });
+// --------------------------다른 파일---------------------------
+app.get('/list', function(req, res) {
+  res.sendfile('list.html')
+});
+// --------------데이터 조회-------------------------------------------
+app.get('/read', function(req, res) {
+  var no = req.query.no;
+  var title = req.query.title;
+  var selectQuery = `select * from post`;
+  connection.query(selectQuery,
+  function(err, rows, fields){
+    if (err) throw err;
+    res.send(rows);
+  })
+});
+// -----------------------데이터 삽입 단계---------------------------------
+app.get('/create', function(req, res) {
+  res.sendfile('create.html')
+});
 
+app.get('/createform', function(req, res) {
+  var title = req.query.title;
+  var text = req.query.text;
+  var insertQuery = `insert post (title, context) values("${title}","${text}")`;
+  connection.query(insertQuery,
+  function(err,rows,fields){
+    if (err) throw err;
+    res.send(rows);
+  })
+});
+// -------------------------수정 단계----------------------------
+app.get('/update2', function(req, res) {
+  res.sendfile('update.html')
+});
+
+app.get('/updateform2', function(req, res) {
+  var no = req.query.no;
+  var title = req.query.title;
+  var text = req.query.text;
+  var updateQuery = `update post set title="${title}", context="${text}"
+  where no=${no}`;
+  connection.query(selectQuery,
+  function(err, rows, fields){
+    if (err) throw err;
+    res.send(rows);
+  })
+});
 
 
 

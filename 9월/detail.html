@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>글상세</title>
+</head>
+
+<body>
+  제목: <span id="title"></span>
+  <br>
+  내용: <span id="text"></span>
+  <br>
+  <input type="button" value="수정하기" id="update">
+  <input type="button" value="삭제하기" id="delete">
+  <input type="button" value="목록으로" id="back">
+</body>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+  var no = location.href.split("=")[1];
+    $.ajax({
+      url:`http://localhost/read2`,
+      data:{
+        no: no,
+      },
+      success:function(res){
+          var info = res[0];
+          $("#title").html(info.title);
+          $("#text").html(info.context);
+        console.log(res);
+      }
+    });
+
+    $("#update").click(function() {
+      $.ajax({
+        url:`http://localhost/edit`,
+        data:{
+          no: no,
+        },
+        success:function(res){
+          location.href=`/edit?no=${no}`;
+        }
+      });
+    });
+
+    $("#delete").click(function(){
+      if(confirm('삭제하시겠습니까?')){
+        $.ajax({
+          url:`http://localhost/delete`,
+          data:{
+            no: no,
+          },
+          success:function(res){
+            alert("삭제되었습니다.")
+            location.href="/post"
+          }
+        });
+      } else {
+      alert("삭제가 취소되었습니다.")
+    }
+  });
+
+
+    $("#back").click(function() {
+      location.href = "/post"
+    });
+
+</script>
+</html>
