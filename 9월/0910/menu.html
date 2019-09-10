@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <span id="menu"></span>
+  <input type="button" value="그래프 그리기" id="graph">
+  <input type="button" value="엑셀 다운로드" id="download">
+  <br>
+  <div id="chart_div"></div>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  var weekDays = ["월", "화", "수", "목", "금"];
+  var optionValue = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  var appendText = "";
+  var arrForChart = [];
+
+  $.ajax({
+    url: "/getMenu",
+    data: {},
+    success: function(res) {
+      for (var i = 0; i < res.length; i++) {
+        appendText += `${weekDays[i]}요일<br>`;
+
+        for (var j = 0; j < res[i].length; j++) {
+          appendText += `${res[i][j]}`;
+          appendText += `<select name="satisfaction${i}">`;
+
+          for (var k = 0; k < 11; k++) {
+            appendText += `<option value="${k}">${k}</option>`;
+          }
+          appendText += `</select><br>`;
+        }
+        appendText += `<br>`;
+      }
+      $("#menu").append(appendText); // append를 쓰면 태그를 닫아버리기에 위에 보는것처럼 +=로 더하면서 해야 한다.
+
+
+      $("#graph").click(function() { // '그래프 그리기'버튼 클릭할 때 실행하는 부분
+        var average = [];
+        var sum = 0;
+
+          // 합계를 구해서 평균을 구하는 줄
+        for (var i = 0; i < res.length; i++) {
+          sum = 0;
+          for (var j = 0; j < res[i].length; j++) {
+            var num = Number($(`select[name=satisfaction${i}]`)[j].value); // selectbox안에 있는 숫자는 문자열형태이기 때문에 Number로 형변환을 해줘야 한다.
+            sum += num;
+          }
+          var averageVal = sum / res[i].length;
+          average.push(averageVal);
+          console.log("합:" + sum);
+          // console.log("평균:" + averageVal);
+        }
+        console.log(average);
+
+        arrForChart = [];
+        // 차트를 그리기위해서 평균값과 요일을 이중배열안에 넣는 작업
+        for (var i = 0; i < average.length; i++) {
+          arrForChart.push([weekDays[i], average[i]])
+        }
+
+
+        // --------------구글 차트 로딩-----------------------------------------------
+        google.charts.load('current', {
+          packages: ['corechart', 'line']
+        });
+        google.charts.setOnLoadCallback(drawCurveTypes);
+      }); // 여기가 '그래프 그리기'버튼 함수 끝부분!!
+
+      // 구글 차트를 그리게 해주는 실질적인 함수
+      function drawCurveTypes() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', '요일'); // x축을 정의하는 줄
+        data.addColumn('number', '만족도'); // y축
+
+        data.addRows(arrForChart); // 이중배열이 들어가야됨.
+
+        var options = {
+          hAxis: {
+            title: '요일'
+          },
+          vAxis: {
+            title: '만족도'
+          }
+        };
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    }
+  }); // ajax끝!!
+
+
+  // ---------------------------------------------------------------
+  // var arr = [
+  //   [1,2,3,4],
+  //   [11,12,13,14,15,16,17,18],
+  //   [21,22,23,24,25,26]
+  // ];
+  //
+  // for (var i = 0; i < arr.length; i++) {
+  //   for(var j = 0; j < arr[i].length / 2; j++){
+  //     console.log(arr[i][j]);
+  //   }
+  //   console.log("==========");
+  // }
+</script>
+
+</html>
