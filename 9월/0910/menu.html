@@ -9,7 +9,7 @@
 <body>
   <span id="menu"></span>
   <input type="button" value="그래프 그리기" id="graph">
-  <input type="button" value="엑셀 다운로드" id="download">
+  <input type="button" value="엑셀 파일 생성" id="download">
   <br>
   <div id="chart_div"></div>
 </body>
@@ -20,16 +20,18 @@
   var optionValue = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   var appendText = "";
   var arrForChart = [];
+  var menu;
 
-  $.ajax({
+  $.ajax({ // 식단표 띄우기 ajax시작!!
     url: "/getMenu",
     data: {},
     success: function(res) {
-      for (var i = 0; i < res.length; i++) {
+      menu = res;
+      for (var i = 0; i < menu.length; i++) {
         appendText += `${weekDays[i]}요일<br>`;
 
-        for (var j = 0; j < res[i].length; j++) {
-          appendText += `${res[i][j]}`;
+        for (var j = 0; j < menu[i].length; j++) {
+          appendText += `${menu[i][j]}`;
           appendText += `<select name="satisfaction${i}">`;
 
           for (var k = 0; k < 11; k++) {
@@ -41,19 +43,19 @@
       }
       $("#menu").append(appendText); // append를 쓰면 태그를 닫아버리기에 위에 보는것처럼 +=로 더하면서 해야 한다.
 
-
+////////////////////////////////////////////////그래프 그리기 버튼 클릭///////////////////////////////////////
       $("#graph").click(function() { // '그래프 그리기'버튼 클릭할 때 실행하는 부분
         var average = [];
         var sum = 0;
 
-          // 합계를 구해서 평균을 구하는 줄
-        for (var i = 0; i < res.length; i++) {
-          sum = 0;
-          for (var j = 0; j < res[i].length; j++) {
+          // 합계를 구해서 평균을 구하는 이중 for문
+        for (var i = 0; i < menu.length; i++) {
+          sum[i] = [];
+          for (var j = 0; j < menu[i].length; j++) {
             var num = Number($(`select[name=satisfaction${i}]`)[j].value); // selectbox안에 있는 숫자는 문자열형태이기 때문에 Number로 형변환을 해줘야 한다.
             sum += num;
           }
-          var averageVal = sum / res[i].length;
+          var averageVal = sum / menu[i].length;
           average.push(averageVal);
           console.log("합:" + sum);
           // console.log("평균:" + averageVal);
@@ -66,8 +68,7 @@
           arrForChart.push([weekDays[i], average[i]])
         }
 
-
-        // --------------구글 차트 로딩-----------------------------------------------
+//////////////////// 구글 차트 로딩///////////////////////////////////////////////////////////////////////
         google.charts.load('current', {
           packages: ['corechart', 'line']
         });
@@ -94,7 +95,35 @@
         chart.draw(data, options);
       }
     }
-  }); // ajax끝!!
+  }); // 식단표 띄우기 ajax끝!!
+
+//////////////////////////////////////////엑셀 파일 다운로드////////////////////////////////////////////////////
+  $("#download").click(function() {
+    reqParam = {};
+    reqParam.menu = menu;
+
+    var scores = [];
+    for (var i=0;i<menu.length;i++){
+      scores[i] = [];
+      var selectBoxes = $(`select[name*='satisfaction${i}']`);
+      for (var j=0;j<selectBoxes.length;j++){
+        scores[i].push(selectBoxes[j].value);
+      }
+      reqParam.scores = scores;
+    }
+
+    $.ajax({
+      url:'/menuExcel',
+        type:'post',
+      data:{
+        reqParam:JSON.stringify(reqParam),
+      },
+      success:function(res){
+        console.log(res);
+        location.href='/getExcelFile';
+      }
+    });
+  });
 
 
   // ---------------------------------------------------------------
@@ -111,5 +140,4 @@
   //   console.log("==========");
   // }
 </script>
-
 </html>
