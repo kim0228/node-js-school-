@@ -20,7 +20,7 @@
   var optionValue = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   var appendText = "";
   var arrForChart = [];
-  var menu;
+
 
   $.ajax({ // 식단표 띄우기 ajax시작!!
     url: "/getMenu",
@@ -98,6 +98,7 @@
   }); // 식단표 띄우기 ajax끝!!
 
 //////////////////////////////////////////엑셀 파일 다운로드////////////////////////////////////////////////////
+  var menu;
   $("#download").click(function() {
     reqParam = {};
     reqParam.menu = menu;
@@ -114,7 +115,7 @@
 
     $.ajax({
       url:'/menuExcel',
-        type:'post',
+      type:'post',
       data:{
         reqParam:JSON.stringify(reqParam),
       },
