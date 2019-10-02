@@ -20,7 +20,7 @@ var connection = mysql.createConnection({
 
 
 app.get('/', function(req, res){
-  res.sendfile(__dirname + '/index.html');
+  res.sendfile(__dirname + '/form.html');
 });
 
 // http.listen(3000, function(){
@@ -42,7 +42,7 @@ app.get('/', function(req, res){
 
 /////////////////////////////////form.html///////////////////////////////////
 
-app.get('/form', function(req, res){
+app.get('/', function(req, res){
   res.sendfile(__dirname + '/form.html');
 });
 
@@ -79,13 +79,17 @@ io.on('connection',function(socket){
         }
     }
 
-    socket.broadcast.to("chatroom").emit('newChatMsg', msg)
-    console.log(msg, msg.userName);
-    var insertQuery = `insert message (name, msg) values("${msg.userName}","${msg.msg}")`;
+
+///////////////////////////message테이블에 name과 msg 삽입////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+    var insertQuery = `insert chathistory (name, message) values("${msg.userName}","${msg.msg}")`;
     connection.query(insertQuery,
     function (err, rows, fields){
       if (err) throw err;
     }) // 보낸 메시지를 나를 제외한 모든 클라이언트에게 보내준다.
+
+    socket.broadcast.to("chatroom").emit('newChatMsg', msg)
+    console.log(msg, msg.userName);
   });
 
   // 접속한 사용자들을 같은 그룹으로 조인시키는 부분
@@ -101,14 +105,6 @@ io.on('connection',function(socket){
     socket.broadcast.to("chatroom").emit('newUserConnected',userName);
     users.push({userName:userName, socketId:socket.id});
     // console.log("login", users);
-
-    // var selectQuery = `select * from message`;
-    // connection.query(selectQuery,
-    // function (err, rows, fields){
-    //   if (err) throw err;
-    //   res.send(rows);
-    // })
-
   });
 
 
@@ -124,5 +120,16 @@ io.on('connection',function(socket){
       }
     }
      console.log("logout", users);
+  });
+
+  // 최근 채팅 목록 15개 보여주기
+  app.get('/getChatHistory', function(req, res){
+    var selectQuery = `select * from chathistory order by no desc limit 15`;
+    connection.query(selectQuery,
+      function(err, rows, fields){
+        if(err){
+        }
+        res.send(rows);
+      })
   });
 });

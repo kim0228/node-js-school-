@@ -86,6 +86,19 @@
       success:function(res){
         console.log(res);
         if(res=="ok"){ // 접속자의 이름이 중복이 아닐 때 실행
+
+            // 채팅창의 과거 채팅 목록을 보여주는 ajax
+            $.ajax({
+              url:'/getChatHistory',
+              success:function(res){
+                for(var i = 0;i<res.length;i++){
+                  var name = res[i].name;
+                  var message = res[i].message;
+                  $("#chats").append(`<div> ${name} : ${message}</div>`);
+                }
+              }
+            })
+
           $("#loginArea").css("display","none");
           $("#chatArea").css("display","");
 
@@ -153,8 +166,7 @@
           $("#userName").focus();
         }
 
-        
-      }
+      } // ajax문의 success문의 끝
     }) // ajax문의 끝!!
   }); // 접속버튼의 끝!!
 
