@@ -260,6 +260,10 @@ app.get('/chart', function (req, res) {
   res.sendfile("chart.html");
 });
 
+app.get('/home', function (req, res) {
+  res.sendfile("ajax_home.html");
+});
+
 app.get('/reqq', function(req, res){
   request.get(`https://polling.finance.naver.com/api/realtime.nhn?query=
     SERVICE_ITEM:280360|SERVICE_RECENT_ITEM:280360`, function(err, response, body){
