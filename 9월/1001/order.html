@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>주문페이지</title>
+  </head>
+
+  <body>
+  <span id="itemlist"></span>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script type="text/javascript">
+    var no = location.href.split("=")[1];
+    //console.log(no);
+    $.ajax({
+      url:'/selectItem',
+      data:{
+        no:no,
+      },
+      success:function(res){
+        //console.log(res);
+        for(var i = 0;i<res.length;i++){
+          var itemInfo = "";
+          itemInfo = itemInfo + `<div class="item"><span id="name">${res[i].name}</span><br>`;
+          itemInfo = itemInfo + `가격:<span class="price">${res[i].price}</span><br>`;
+          itemInfo = itemInfo + `재고:<span class="inventory">${res[i].inventory}</span><br>`;
+          $("#itemlist").append(`${itemInfo}`);
+
+          $("#itemlist").append(`수량:<input type="text" id="quantity"><br>`);
+          $("#itemlist").append(`ID:<input type="text" id="id"><br>`);
+          $("#itemlist").append(`<button class="buyBtn">구매하기</button></div>`);
+        }
+      }
+    });
+
+    $(".buyBtn").click(function(){
+      if($(".inventory").val() == 0){
+        alert("재고가 없습니다.");
+        return;
+      }
+      $.ajax({
+        url:'/insertOrder',
+        type:'post',
+        data:{
+          no:no,
+          quantity:$("#quantity").val(),
+          id:$("#id").val(),
+          inventory:$(".inventory").val(),
+        },
+        success:function(res){
+          console.log(res);
+          alert("주문이 완료되었습니다.")
+        }
+      })
+    });
+  </script>
+  </body>
+</html>

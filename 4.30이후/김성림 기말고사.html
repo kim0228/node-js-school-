@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<body>
+  <select id = "selectBox">
+  <option id = "hyun"value="0">삼성전기</option>
+  <option id = "kakao"value="1">카카오</option>
+  <option id = "samsung"value="2">삼성sds</option>
+  <option id = "hyundai1"value="3">현대중공업</option>
+  <option id = "samsung1"value="4">삼성전자</option>
+  <input type="button" id="start" value="시작">
+  <input type="button" id="stop" value="멈추기">
+  경과시간: <span id="sec"></span>초<br>
+  <span id = "company"></span>
+  <div id = "chart_div"></div>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type = "text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+  var timer;
+  var arr = [];
+  var minValue;
+  var maxValue;
+  var timerInterval;
+  var time = [];
+  $("#start").click(function() {
+
+    setTimeout(function(){ // setTimeout함수는 안에 있는 함수를 딱 한번만 실행시킨다.
+      timerInterval = setInterval(function() { // setInterval함수는 안에 있는 함수를 정해진 시간으로 계속 실행시킨다.
+        timer++;
+        $("#sec").html(timer);
+      }, 1000)
+    })
+
+    timer = setInterval(function() {
+      var price = [];
+      arr = [];
+
+      $.ajax({
+        url:`http://localhost/samsung`,
+        data: {
+
+        },
+        success:function(response) {
+          for (var i = 0; i<response.length; i++){
+            price[i] = response[i].price;
+            time[i] = response[i].time;
+            minValue = Math.min.apply(null, price);
+            maxValue = Math.max.apply(null, price);
+            console.log(time[i]);
+            console.log(price[i]);
+            console.log(minValue);
+            var date = time[i].split('T')[0];
+            time = time[i].split('T')[1].split('.')[0].split(':');
+            // time[0] = Number(time[0])+9;
+            console.log(time);
+            var currentTime = new Date(date[0],date[1],date[2],time[0],time[1],time[2])
+
+            // time[i] = time[i].split('.')[0]
+            // time[i] = time[i].replace(':', '')
+            // time[i] = Number(time[i].replace(':', ''))
+            console.log(time[i])
+            arr.push([currentTime, price[i]])
+          }
+          google.charts.load('current', {
+            packages: ['corechart', 'line']
+          });
+          google.charts.setOnLoadCallback(drawCurveTypes);
+        }
+    });
+  }, 1000)
+  if ($("#selectBox").val()==0) {
+    $("#company").html("삼성전기");
+  }
+  else if ($("#selectBox").val()==1) {
+    $("#company").html("카카오");
+  }
+  else if ($("#selectBox").val()==2) {
+    $("#company").html("삼성sds");
+  }
+  else if ($("#selectBox").val()==3) {
+    $("#company").html("현대중공업");
+  }
+  else if ($("#selectBox").val()==4) {
+    $("#company").html("삼성전자");
+  }
+})
+
+
+      // $.ajax({
+      //   url:`http://localhost/hyundai`,
+      //   data: {
+      //
+      //   },
+      //   success:function(response) {
+      //     for (var i = 0; i<response.length; i++){
+      //       price[i] = response[i].price;
+      //       time[i] = response[i].time;
+      //       minValue = Math.min.apply(null, price);
+      //       maxValue = Math.max.apply(null, price);
+      //       console.log(time[i]);
+      //       console.log(price[i]);
+      //       console.log(minValue);
+      //       var date = time[i].split('T')[0];
+      //       time = time[i].split('T')[1].split('.')[0].split(':');
+      //       // time[0] = Number(time[0])+9;
+      //       console.log(time);
+      //       var currentTime = new Date(date[0],date[1],date[2],time[0],time[1],time[2])
+      //
+      //       // time[i] = time[i].split('.')[0]
+      //       // time[i] = time[i].replace(':', '')
+      //       // time[i] = Number(time[i].replace(':', ''))
+      //       console.log(time[i])
+      //       arr.push([currentTime, price[i]])
+      //     }
+      //     google.charts.load('current', {
+      //       packages: ['corechart', 'line']
+      //     });
+      //     google.charts.setOnLoadCallback(drawCurveTypes);
+      //   }
+      // });
+
+      // $.ajax({
+      //   url:`http://localhost/samsungsds`,
+      //   data: {
+      //
+      //   },
+      //   success:function(response) {
+      //     for (var i = 0; i<response.length; i++){
+      //       price[i] = response[i].price;
+      //       time[i] = response[i].time;
+      //       minValue = Math.min.apply(null, price);
+      //       maxValue = Math.max.apply(null, price);
+      //       console.log(time[i]);
+      //       console.log(price[i]);
+      //       console.log(minValue);
+      //       var date = time[i].split('T')[0];
+      //       time = time[i].split('T')[1].split('.')[0].split(':')[2];
+      //       // time[0] = Number(time[0])+9;
+      //       console.log(time);
+      //       var currentTime = new Date(date[0],date[1],date[2],time[0],time[1],time[2])
+      //
+      //       // time[i] = time[i].split('.')[0]
+      //       // time[i] = time[i].replace(':', '')
+      //       // time[i] = Number(time[i].replace(':', ''))
+      //       console.log(time[i])
+      //       arr.push([currentTime, price[i]])
+      //     }
+      //     google.charts.load('current', {
+      //       packages: ['corechart', 'line']
+      //     });
+      //     google.charts.setOnLoadCallback(drawCurveTypes);
+      //   }
+      // });
+
+      // $.ajax({
+      //   url:`http://localhost/kakao`,
+      //   data: {
+      //
+      //   },
+      //   success:function(response) {
+      //     for (var i = 0; i<response.length; i++){
+      //       price[i] = response[i].price;
+      //       time[i] = response[i].time;
+      //       minValue = Math.min.apply(null, price);
+      //       maxValue = Math.max.apply(null, price);
+      //       console.log(time[i]);
+      //       console.log(price[i]);
+      //       console.log(minValue);
+      //       var date = time[i].split('T')[0];
+      //       time = time[i].split('T')[1].split('.')[0].split(':')[2];
+      //       // time[0] = Number(time[0])+9;
+      //       console.log(time);
+      //       var currentTime = new Date(date[0],date[1],date[2],time[0],time[1],time[2])
+      //
+      //       // time[i] = time[i].split('.')[0]
+      //       // time[i] = time[i].replace(':', '')
+      //       // time[i] = Number(time[i].replace(':', ''))
+      //       console.log(time[i])
+      //       arr.push([currentTime, price[i]])
+      //     }
+      //     google.charts.load('current', {
+      //       packages: ['corechart', 'line']
+      //     });
+      //     google.charts.setOnLoadCallback(drawCurveTypes);
+      //   }
+      // });
+
+  //     $.ajax({
+  //       url:`http://localhost/samsung`,
+  //       data: {
+  //
+  //       },
+  //       success:function(response) {
+  //         for (var i = 0; i<response.length; i++){
+  //           price[i] = response[i].price;
+  //           time[i] = response[i].time;
+  //           minValue = Math.min.apply(null, price);
+  //           maxValue = Math.max.apply(null, price);
+  //           console.log(time[i]);
+  //           console.log(price[i]);
+  //           console.log(minValue);
+  //           var date = time[i].split('T')[0];
+  //           time = time[i].split('T')[1].split('.')[0].split(':')[2];
+  //           // time[0] = Number(time[0])+9;
+  //           console.log(time);
+  //           var currentTime = new Date(date[0],date[1],date[2],time[0],time[1],time[2])
+  //
+  //           // time[i] = time[i].split('.')[0]
+  //           // time[i] = time[i].replace(':', '')
+  //           // time[i] = Number(time[i].replace(':', ''))
+  //           console.log(time[i])
+  //           arr.push([currentTime, price[i]])
+  //         }
+  //         google.charts.load('current', {
+  //           packages: ['corechart', 'line']
+  //         });
+  //         google.charts.setOnLoadCallback(drawCurveTypes);
+  //       }
+  //     });
+
+
+    function drawCurveTypes() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('datetime', 'time');
+      data.addColumn('number', 'price');
+
+      data.addRows(arr);
+
+      var options = {
+        width: 1000,
+        height: 400,
+
+        hAxis: { // x축
+          title: 'time'
+
+        },
+        vAxis: { // y축
+          title: 'price',
+          viewWindow: {
+            min: minValue,
+            max: maxValue
+          }
+        },
+        series: {
+          1: {
+            curveType: 'function'
+          }
+        },
+        colors: ['#a52714', '#097138']
+      };
+      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+
+    }
+
+
+
+
+    $("#stop").click(function() {
+      setTimeout(function() {
+        clearInterval(timerInterval);
+      }, 1000);
+      setTimeout(function() {
+        clearInterval(timer);
+      }, 1000);
+    })
+
+</script>
+</html>

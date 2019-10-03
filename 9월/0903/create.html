@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  제목: <input type="text" value="" id="title">
+  <br>
+  내용: <textarea name="name" rows="8" cols="80" id="text"></textarea>
+  <br>
+  <input type="button" value="글쓰기"id="write">
+  <br>
+  <input type="button" value="삭제"id="delete">
+  <br>
+  <input type="button" value="수정하기"id="update">
+  <br>
+  <span id="testList"></span>
+</body>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+
+  $("#title").focus();
+
+  $("#write").click(function() {
+    if(confirm("글을 작성하시겠습니까?")){
+      $.ajax({
+        url:`http://localhost/createform`,
+        type:'get',
+        data:{
+          title: $("#title").val(),
+          text: $("#text").val(),
+        },
+        success:function(response){
+          console.log(response);
+          location.href="/post"
+        }
+      });
+    } 
+  });
+
+  // $("#delete").click(function(){
+  //   $.ajax({
+  //     url:`http://localhost/delete`,
+  //     data:{
+  //       number:$("#number").val(),
+  //     },
+  //     success:function(response){
+  //       console.log(response);
+  //     }
+  //   })
+  // });
+  //
+  // $("#update").click(function() {
+  //   location.href = "/updateform"
+  // });
+
+
+
+</script>
+</html>

@@ -5,6 +5,26 @@
   <meta charset="utf-8">
   <title></title>
 </head>
+<<<<<<< HEAD
+<body>
+  <input type="button" id="ajaxBtn" value="ajax">
+  <input type="button" id="resetBtn" value="스톱">
+  <input type="button" id="deleteBtn" value="삭제">
+  <input type="button" id="drawGraphBtn" value="그리기"><br>
+  <span id="testArea"></span>
+  <div id="chart"></div>
+  <span id="result"></span>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  var timer;
+  var arr = [];
+  var minValue;
+  var maxValue;
+  $("#ajaxBtn").click(function() {
+    //초당 자동 생성
+=======
 
 <body>
   <input type="button" id="ajaxBtn" value="ajax"><br>
@@ -15,6 +35,7 @@
 
   $("#ajaxBtn").click(function() {
      setInterval(function(){ //초당 자동 생성
+>>>>>>> 23a7d6cec40fe728332fc6f46516559775ddc67e
       $.ajax({
         url: '/reqq',
         data: {},
@@ -24,6 +45,100 @@
             var priecNum = response[i].price;
             $("#testArea").append(`${response[i].price}/${response[i].time}<br>`);
             //가격이라는 쿼리는 key:vlaue인 딕셔너리 형태가 들어있는 배열이기 때문에 어떤 쿼리에 어떤 밸류를 지정해줘야지 제대로 나온다.
+<<<<<<< HEAD
+          }
+        }
+      });
+
+  });
+
+  $("#resetBtn").click(function() {
+    setTimeout(function() {
+      clearInterval(timer);
+    }, 2000);
+  })
+
+  $("#deleteBtn").click(function() {
+    $.ajax({
+        url:`http://localhost/dataDelete`,
+        data:{
+      },
+      success:function(response){
+           location.href="/test"
+        $("#testArea").html("");
+      }
+    });
+  })
+
+  $("#drawGraphBtn").click(function(){
+      timer = setInterval(function(){
+      var time = [];
+      var price = [];
+      arr = [];
+
+    $.ajax({
+      url: `http://localhost/reqq`,
+      data: {},
+      success: function(response) {
+        for (var i = 0; i < response.length; i++) {
+          price[i] = Math.floor(response[i].price);
+          time[i] = response[i].time
+          minValue = Math.min.apply(null, price);
+          maxValue = Math.max.apply(null, price);
+          console.log(time[i])
+          console.log(price[i])
+          time[i] = time[i].split('T')[1]
+          time[i] = time[i].split('.')[0]
+          // time[i] = time[i].replace(':', '')
+          // time[i] = Number(time[i].replace(':', ''))
+          console.log(time[i])
+          arr.push([time[i], price[i]])
+          $("#result").html(`최솟값: ${minValue}/최댓값: ${maxValue}<br>`)
+        }
+        google.charts.load('current', {
+          packages: ['corechart', 'line']
+        });
+        google.charts.setOnLoadCallback(drawCurveTypes);
+      }
+    });
+    }, 4000)//1000대는 1초대 10000은 10초대
+  })
+
+  function drawCurveTypes() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'time');
+    data.addColumn('number', 'price');
+
+
+    data.addRows(arr);
+
+    var options = {
+      width: 1000,
+      height: 700,
+
+      hAxis: { // x축
+        title: 'time'
+
+      },
+      vAxis: { // y축
+        title: 'price',
+        viewWindow: {
+          min: minValue,
+          max: maxValue
+        }
+      },
+      series: {
+        1: {
+          curveType: 'function'
+        }
+      },
+      colors: ['#a52714', '#097138']
+    };
+    var chart = new google.visualization.LineChart(document.getElementById('chart'));
+    chart.draw(data, options);
+  }
+</script>
+=======
 
           }
         }
@@ -32,4 +147,5 @@
   });
 </script>
 
+>>>>>>> 23a7d6cec40fe728332fc6f46516559775ddc67e
 </html>

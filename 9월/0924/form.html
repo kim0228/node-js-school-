@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+        #chatroom {
+            width: 600px;
+            margin-bottom: 2px;
+            display:flex;
+        }
+
+        #chats {
+            border: 1px solid black;
+            width: 375px;
+            height: 90vh;
+            overflow: scroll;
+            float: left;
+        }
+
+        #users {
+            border: 1px solid black;
+            border-left: none;
+            float: right;
+            width: 200px;
+            height: 90vh;
+        }
+
+        #message {
+            width: 400px;
+        }
+
+        .user {
+            padding: 4px;
+            background-color: #cecece;
+        }
+
+        #userCount {
+            padding: 5px;
+            background-color: black;
+            color: white;
+            border-bottom: 1px solid white;
+        }
+
+        .timeago {
+            color: #cecece;
+            float: right;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+  <div id="loginArea">
+    <input type="text" id="userName"/>
+    <button id="connect">접속</button>
+  </div>
+<div id="chatArea" style="display:none">
+  <div id="chatroom">
+      <div id="chats">
+
+      </div>
+      <div id="users">
+          <div id="userCount"><span id="count"></span> Users Online</div>
+          <div id="connectedUserList"></div>
+      </div>
+  </div>
+  <div>
+    <input type="text" name="messages" id="message">
+    <input type="button" id="sendMsg" value="send">
+  </div>
+</div>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+  var socket = io();
+  var userCnt = 0;
+  $("#userName").focus();
+  $('#connect').click(function() { // 아이디로 접속하고자 할 때 실행
+    $.ajax({
+      url:'/logincheck',
+      type:'post',
+      data:{
+        userName:$('#userName').val()
+      },
+      success:function(res){
+        console.log(res);
+        if(res=="ok"){ // 접속자의 이름이 중복이 아닐 때 실행
+
+            // 채팅창의 과거 채팅 목록을 보여주는 ajax
+            $.ajax({
+              url:'/getChatHistory',
+              success:function(res){
+                for(var i = 0;i<res.length;i++){
+                  var name = res[i].name;
+                  var message = res[i].message;
+                  $("#chats").append(`<div> ${name} : ${message}</div>`);
+                }
+              }
+            })
+
+          $("#loginArea").css("display","none");
+          $("#chatArea").css("display","");
+
+          socket = io();
+
+          // 각 다른 사용자들을 같은 방으로 조인시킴.
+          socket.emit('joinRoom',$("#userName").val()); // 사용자들을 그룹으로 조인시키기 위함
+
+          socket.on('getConnectedUsers',function(usersNames){
+            userCnt++;
+            $("#count").html(userCnt);
+            $("#connectedUserList").append(`<div class="user" ">
+            <b>${$("#userName").val()}(나)</b></div>`);
+            console.log(usersNames)
+            for (var i = 0;i<usersNames.length;i++){
+              userCnt++;
+              $("#count").html(userCnt);
+              $("#connectedUserList").append(`<div class="user" id="${usersNames[i]}">
+              ${usersNames[i]}</div>`);
+            }
+          });
+
+
+          // 메시지를 보낼 때 실행되는 함수
+          $("#sendMsg").click(function(){
+
+            // 채팅 메시지 서버로 emit하기
+            socket.emit('chat message', {
+              msg: $("#message").val(),
+            })
+
+            // 채팅화면에 나의 채팅 메시지가 보임
+            $('#chats').append(`<div><b>나 : ${$("#message").val()}<b></div>`);
+            $("#message").val('');
+            $("#message").focus();
+          });
+
+
+          // 나의 채팅창에 다른 사람의 메시지가 보이게 해주는 부분
+          socket.on('newChatMsg',function(msg){
+            $('#chats').append(`<div><b>${msg.userName} : ${msg.msg}<b></div>`);
+            console.log(msg);
+          });
+
+          // 채팅창에 유저가 접속했을 때 유저명을 알려주는 부분
+          socket.on('newUserConnected',function(userName){
+            $('#chats').append(`<div>=======${userName}님이 입장하셨습니다.======</div>`);
+            userCnt++;
+            $("#count").html(userCnt);
+            $("#connectedUserList").append(`<div class="user" id="${userName}">${userName}</div>`);
+          });
+
+          // 다른 어떤 유저가 연결을 끊었을 때
+          socket.on('someoneDisconnected',function(userName){
+            $("#chats").append(`<div>===${userName}님이 퇴장하셨습니다====</div>`);
+            $("#" + userName).remove();
+            userCnt--;
+            $("#count").html(userCnt);
+          });
+        } // if문 끝!!!
+
+        else if(res=="notok"){ // 접속자의 아이디가 존재하는 아이디일 때 이 else if문으로 넘어온다.
+          alert("동일한 아이디가 있습니다.바꿔주세요")
+          $("#userName").val("");
+          $("#userName").focus();
+        }
+
+      } // ajax문의 success문의 끝
+    }) // ajax문의 끝!!
+  }); // 접속버튼의 끝!!
+
+  // 접속할 때 엔터키누르면 실행되는 함수
+  $("#userName").keydown(function(key){
+    if(key.keyCode==13){
+      $("#connect").click();
+    }
+  });
+
+  // 채팅할 때 엔터키누르면 실행되는 함수
+  $("#message").keydown(function(key){
+    if(key.keyCode==13){
+      $("#sendMsg").click();
+    }
+  });
+
+
+</script>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title></title>
+</head>
+<body>
+<input type="button" id="drawGraphBtn" value="그리기">
+<input type="button" id="deleteBtn" value="삭제">
+<input type="button" id="stopBtn" value="멈추기">
+<div id="chart_div"></div>
+<span id="minMax"></span>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+  var timer;
+  var arr = [];
+  var minValue;
+  var maxValue;
+  var time = [];
+$("#drawGraphBtn").click(function() {
+  timer = setInterval(function() {
+    var price = [];
+    arr = [];
+
+    $.ajax({
+      url:`http://localhost/reqq1`,
+      data: {
+
+      },
+      success:function(response) {
+        for (var i = 0; i<response.length; i++){
+          // time = 2019-06-10T11:23:06.000Z
+          price[i] = response[i].price;
+          time[i] = response[i].time;
+          minValue = Math.min.apply(null, price);
+          maxValue = Math.max.apply(null, price);
+          console.log(time[i])
+          console.log(price[i]);
+          console.log(minValue);
+          var date = time[i].split('T')[0];
+          time = time[i].split('T')[1].split('.')[0].split(':');
+          time[0] = Number(time[0])+9;
+          console.log(time);
+          var currentTime = new Date(date[0],date[1],date[2],time[0],time[1],time[2])
+
+          // time[i] = time[i].split('.')[0]
+          // time[i] = time[i].replace(':', '')
+          // time[i] = Number(time[i].replace(':', ''))
+          console.log(time[i])
+          arr.push([currentTime, price[i]]) // push는 배열의 맨 마지막에 값 삽입
+          $("#minMax").html(`최솟값: ${minValue}<br>최댓값: ${maxValue}`)
+        }
+        google.charts.load('current', {
+          packages: ['corechart', 'line']
+        });
+        google.charts.setOnLoadCallback(drawCurveTypes);
+      }
+    });
+  }, 1000)
+})
+
+  function drawCurveTypes() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('datetime', 'time');
+    data.addColumn('number', 'price');
+
+    data.addRows(arr);
+
+    var options = {
+      width: 1000,
+      height: 700,
+
+      hAxis: { // x축
+        title: 'time'
+
+      },
+      vAxis: { // y축
+        title: 'price',
+        viewWindow: {
+          min: minValue,
+          max: maxValue
+        }
+      },
+      series: {
+        1: {
+          curveType: 'function'
+        }
+      },
+      colors: ['#a52714', '#097138']
+    };
+    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }
+
+
+
+  // 삭제버튼을 누르면 테이블에 있는 데이터와 차트 모두 삭제
+  $("#deleteBtn").click(function() {
+    $.ajax({
+        url:`http://localhost/chartDelete`,
+        data:{
+      },
+      success:function(response){
+           location.href="/chart1"
+        $("#chart_div").html("");
+      }
+    });
+  })
+  
+  // 멈추기버튼을 누르면 데이터 삽입이 멈춤
+  $("#stopBtn").click(function() {
+    setTimeout(function() {
+      clearInterval(timer);
+    }, 2000);
+  })
+
+</script>
+</html>
