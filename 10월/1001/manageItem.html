@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>아이템 관리</title>
+  </head>
+  <body>
+    <span id = "itemList"></span>
+  </body>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script type="text/javascript">
+    $.ajax({
+      url:'/selectItems',
+      data:{
+      },
+      success:function(res){
+          // console.log(res);
+          for(let i = 0;i<res.length;i++){
+            var itemInfo=`<div class="itemLists">`;
+            itemInfo = itemInfo + `<span class="itemArea">제품명 : <input type="text" id="name_${res[i].no}" value=${res[i].name}></span>`;
+            itemInfo = itemInfo + `<span class="priceArea"> / 가격 : <input type="text" id="price_${res[i].no}" value=${res[i].price}></span>`;
+            itemInfo = itemInfo + `<span class="inventoryArea"> / 재고 : <input type="button" value="-" id="minus_${res[i].no}">
+            <input type="text" id="inventory_${res[i].no}" value=${res[i].inventory}><input type="button" value="+" id="plus_${res[i].no}"></span>`;
+            itemInfo = itemInfo + `<span class="onsaleArea">
+            / 판매여부 : <select id="onSale_${res[i].no}"><option value=1 ${res[i].onsale == 1 ? 0 : 1}>판매중</option>
+            <option value=0 ${res[i].onsale == 0 ? 0:1}>비매</option></select></span>`;
+            itemInfo = itemInfo + ` / <input type="button" value="업데이트" id="update_${res[i].no}" onclick="numberClick(${res[i].no})"></div>`;
+
+            $("#itemList").append(`${itemInfo}`);
+
+
+            $("#plus_"+res[i].no).click(function(){
+              $("#inventory_"+res[i].no).val(parseInt($("#inventory_"+res[i].no).val())+1);
+            });
+
+            $("#minus_"+res[i].no).click(function(){
+              $("#inventory_"+res[i].no).val(parseInt($("#inventory_"+res[i].no).val())-1);
+            });
+        }
+
+        // var a = $(`#onSale_${res[0].no} option:selected`).val();
+        // console.log(a);
+        var newItem = `<br><br><br><div class="newItemList">신제품 입력<br>
+        제품명 : <input type="text" id="newItem">
+        / 가격 : <input type="text" id="newPrice">
+        / 재고 : <input type="text" id="newInventory">
+        판매여부 : <select id="newOnSale" selected><option value=1>판매중</option>
+        <option value=0>비매</option></select> / <input type="button" value="생성" id="createItem"></div>`;
+        $("#itemList").append(newItem);
+          $("#createItem").click(function(){
+            var no = $("#newOnSale").val();
+            console.log(no);
+            $.ajax({
+              url:'/insertItem',
+              type:'post',
+              data:{
+                name:$("#newItem").val(),
+                price:$("#newPrice").val(),
+                inventory:$("#newInventory").val(),
+                onSale:$("#newOnSale option:selected").val()
+              },
+              success:function(res){
+                console.log("들어가십시다");
+                location.reload();
+              }
+            })
+          });
+      }
+    });
+
+    function numberClick(no){ // update 함수
+        $.ajax({
+          url:'/updateItem',
+          type:'post',
+          data:{
+            no:no,
+            name:$("#name_"+no).val(),
+            price:$("#price_"+no).val(),
+            inventory:$("#inventory_"+no).val(),
+            onSale:$(`#onSale_${no}`).val()
+          },
+          success:function(res){
+            location.reload();
+            alert("수정되었습니다.");
+          }
+        })
+      };
+
+  </script>
+</html>

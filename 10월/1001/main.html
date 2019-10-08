@@ -35,7 +35,7 @@
       for(var i = 0;i<info.length;i++){
         var itemInfo = "";
         itemInfo = itemInfo + `<div class="item"><span id="name">${info[i].name}</span><br>`;
-        itemInfo = itemInfo + `가격:<span class="price">${info[i].price}</span><br>`;
+        itemInfo = itemInfo + `가격:<span class="price">￦${info[i].price}</span><br>`;
         itemInfo = itemInfo + `재고:<span class="inventory">${info[i].inventory}</span><br>`;
         itemInfo = itemInfo + `<button class="buy" onclick="openNewWindow(${info[i].no})">구매하기</button></div>`;
         $("#itemlists").append(`${itemInfo}`);
