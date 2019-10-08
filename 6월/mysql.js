@@ -260,7 +260,11 @@ app.get('/chart', function (req, res) {
   res.sendfile("chart.html");
 });
 
+<<<<<<< HEAD
+app.get('/home', function (req, res) {
+=======
 app.get('/ajaxhome', function (req, res) {
+>>>>>>> 248416ad25b6d0063ef5eb8f6f652f04466df625
   res.sendfile("ajax_home.html");
 });
 
