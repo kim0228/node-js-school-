@@ -34,6 +34,10 @@ app.get('/manageItem', function(req, res){
   res.sendfile(__dirname +'/manageItem.html');
 });
 
+app.get('/manageorder', function(req, res){
+  res.sendfile(__dirname +'/manageorder.html');
+});
+
 ///////////////////////////////////////////////////////////////////////////////
 app.get('/selectItems',function(req, res){
   var selectQuery = `select * from item`;
@@ -70,6 +74,7 @@ app.post('/insertOrder', function(req, res){
   });
   //////////////////////////////////////////////////////////////////////////////////////////////////
   var updateQuery = `update item set inventory=inventory-${quantity} where no = ${itemNo}`;
+  console.log(updateQuery);
   connection.query(updateQuery,
   function(err,rows,fields){
     if (err) throw err;
@@ -86,7 +91,7 @@ app.post('/updateItem', function(req, res){
   var onSale = req.body.onSale;
   var updateQuery = `update item set name="${name}", price=${price},
   inventory=${inventory}, onsale=${onSale} where no=${itemNo}`;
-  console.log(updateQuery);
+  // console.log(updateQuery);
   connection.query(updateQuery,
   function(err,rows,fields){
     if (err) throw err;
@@ -101,8 +106,55 @@ app.post('/insertItem', function(req, res){
   var onSale = req.body.onSale;
   var insertQuery = `insert into item (name, price, inventory, onsale)
   values ("${name}",${price},${inventory},${onSale})`;
-  console.log(insertQuery);
+  // console.log(insertQuery);
   connection.query(insertQuery,
+  function(err,rows,fields){
+    if (err) throw err;
+    res.send(rows);
+  });
+});
+///////////////////////////////////////////////////////////////////////////////
+app.get('/joinOrderItem', function(req, res){
+  var selectQuery = `
+  select a.no, a.itemNo, a.id, a.complete, a.quantity, a.date,
+  b.name, b.price, b.inventory
+  from ordertable as a left join item as b
+  on a.itemNo = b.no;
+`;
+  connection.query(selectQuery,
+  function(err,rows,fields){
+    if (err) throw err;
+    res.send(rows);
+  });
+});
+
+app.post('/cancelOrder', function(req, res){
+  var no = req.body.no;
+  var itemNo = req.body.itemNo;
+  var quantity = req.body.quantity;
+  var updateQuery = `update ordertable set complete = 2 where no = ${no}`;
+  console.log(updateQuery);
+  connection.query(updateQuery,
+  function(err,rows,fields){
+    if (err) throw err;
+    res.send(rows);
+  });
+
+  var updateQuery2 = `update item set inventory = inventory + ${quantity} where no = ${itemNo}`;
+  console.log(updateQuery2);
+  connection.query(updateQuery2,
+  function(err,rows,fields){
+    if (err) throw err;
+    // res.send(rows);
+  });
+
+});
+
+app.post('/completeOrder', function(req, res){
+  var no = req.body.no;
+  var updateQuery = `update ordertable set complete = 1 where no = ${no}`;
+  console.log(updateQuery);
+  connection.query(updateQuery,
   function(err,rows,fields){
     if (err) throw err;
     res.send(rows);

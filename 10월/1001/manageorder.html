@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>주문관리</title>
+  </head>
+  <body>
+  <div id="orderArea"></div>
+  </body>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script type="text/javascript">
+    $.ajax({
+      url:'/joinOrderItem',
+      data:{
+      },
+      success:function(res){
+        console.log(res);
+        for(let i = 0;i<res.length;i++){
+          let item = res[i];
+          var orderInfo = `<div class=orderList_${item.no}>
+          <b>고객ID: </b>${item.id}
+          <b>/ 제품명 : </b>${item.name}
+          <b>/ 단가 : </b>${item.price}
+          <b>/ 수량 : </b>${item.quantity}
+          <b>/ 총액 : </b>${item.price * item.quantity}
+          <b>/ 주문날짜 :</b> ${item.date}
+          <input type='button' value='발송완료' id='sendBtn_${item.no}' onclick=orderComplete(${item.no})>
+          <input type='button' value='주문취소' id='cancelBtn' onclick=orderCancel(${item.no},${item.itemNo},${item.quantity},${item.inventory})></span>
+          <br>`
+          $("#orderArea").append(orderInfo);
+          if(item.complete == 1 || item.complete == 2){
+            $(`.orderList_${item.no}`).css('display','none');
+          }
+        }
+      }
+    });
+
+  function orderCancel(no, itemNo, quantity, inventory){
+    $.ajax({
+      url:'/cancelOrder',
+      type:'post',
+      data:{
+        no:no,
+        itemNo:itemNo,
+        quantity:quantity,
+        inventory:inventory
+      },
+      success:function(res){
+        location.reload();
+      }
+    });
+  };
+
+  function orderComplete(no){
+    $.ajax({
+      url:'/completeOrder',
+      type:'post',
+      data:{
+        no:no
+      },
+      success:function(res){
+        alert("발송완료");
+        location.reload();
+      }
+    });
+  }
+
+  </script>
+</html>

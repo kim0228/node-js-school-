@@ -11,14 +11,14 @@
       font: normal 13px/1.5 Georgia, Serif;
       color: #333;
   }
-.item {
+  #item {
     background-color: #fff;
     float: left;
     margin: 0 10px 10px 0;
     width: 205px;
     padding: 10px;
     height: 290px;
-}
+  }
   </style>
 </head>
 <body>
@@ -34,13 +34,16 @@
       console.log(info);
       for(var i = 0;i<info.length;i++){
         var itemInfo = "";
-        itemInfo = itemInfo + `<div class="item"><span id="name">${info[i].name}</span><br>`;
-        itemInfo = itemInfo + `가격:<span class="price">￦${info[i].price}</span><br>`;
-        itemInfo = itemInfo + `재고:<span class="inventory">${info[i].inventory}</span><br>`;
+        itemInfo = itemInfo + `<div class="item_${info[i].no}" id="item"><span id=name>${info[i].name}</span><br>`;
+        itemInfo = itemInfo + `가격:<span class=price>￦${info[i].price}</span><br>`;
+        itemInfo = itemInfo + `재고:<span class=inventory>${info[i].inventory}</span><br>`;
         itemInfo = itemInfo + `<button class="buy" onclick="openNewWindow(${info[i].no})">구매하기</button></div>`;
         $("#itemlists").append(`${itemInfo}`);
-      }
 
+        if(info[i].onsale == 0){
+          $(`.item_${info[i].no}`).css("display","none");
+        }
+      }
     }
   });
 
