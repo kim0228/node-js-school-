@@ -50,7 +50,7 @@ const Excel = require('exceljs/modern.nodejs');
 // 	res.send("res");
 // });
 
-app.post('/menuExcel', function (req, res){ // '엑셀 다운로드'버튼을 누르면 엑셀 파일이 생기면서 데이터가 들어간다.
+app.post('/menuExcel', function (req, res){ 
   var workbook = new Excel.Workbook();
   var sheet = workbook.addWorksheet('menu');
 
