@@ -34,7 +34,7 @@ app.get('/manageItem', function(req, res){
   res.sendfile(__dirname +'/manageItem.html');
 });
 
-app.get('/manageorder', function(req, res){
+app.get('/manageOrder', function(req, res){
   res.sendfile(__dirname +'/manageorder.html');
 });
 

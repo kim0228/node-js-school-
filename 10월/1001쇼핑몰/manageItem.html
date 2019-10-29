@@ -7,6 +7,9 @@
   <body>
     <div id = "itemArea"></div>
     <div id = "createArea"></div>
+    <div id="home">
+      <input type="button" value="홈으로" id="adminPage">
+    </div>
   </body>
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script type="text/javascript">
@@ -70,6 +73,8 @@
           onSale:$("#newOnSale option:selected").val()
         },
         success:function(res){
+          alert("생성 완료")
+          location.reload();
         }
       });
     };
@@ -91,6 +96,10 @@
           }
         })
       };
+
+      $("#adminPage").click(function(){
+        location.href='/admin';
+      });
 
   </script>
 </html>
