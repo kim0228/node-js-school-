@@ -48,7 +48,7 @@ app.get('/', function(req, res){
 
 
 //////////////////////////////socket.io//////////////////////////////////////
-var users = [{userName:"test1", socketId:"testId"}];
+var users = [];
 var io = require('socket.io').listen(server);
 
 // 적은 아이디가 중복인지 아닌지 확인하고 로그인하는 부분
