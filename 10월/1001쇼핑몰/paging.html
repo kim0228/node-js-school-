@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>페이징</title>
+  </head>
+  <body>
+    <div id = "itemArea"></div>
+    <div id = "pageArea"></div>
+  </body>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script type="text/javascript">
+    var currPage = 1;
+    var pageNUm;
+    $.ajax({
+      url:'/countItem',
+      data:{},
+      success:function(res){
+        console.log(res[0].count);
+        totalCount = res[0].count
+        pageNum = Math.ceil(totalCount/10);
+
+        $.ajax({
+          url:'/pagingItem',
+          data:{
+
+          },
+          success:function(res){
+          console.log(res);
+            for (let i = 0; i < res.length; i++) {
+              let item = res[i];
+              var itemInfo=`<span id="itemList_${item.no}">
+              ${item.no} ${item.name} ${item.price}</span><br>`;
+              $("#itemArea").append(`${itemInfo}`);
+            }
+          }
+        });
+      }
+    });
+
+
+
+
+
+  </script>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+<body>
+    <div id="listArea">
+
+    </div>
+    <div id="pageArea">
+
+    </div>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+
+    let currentPage = 1;
+    function main(currentPage) {
+	    $.ajax({
+		    url:'/getListCnt',
+		    data:"",
+		    success:function(res){
+			    let totalCnt = res.totalCnt;
+			    let maxPage = Math.ceil(totalCnt/10);
+			    if(currentPage > maxPage) {
+				    currentPage = maxPage;
+			    }
+			    if(currentPage < 1) {
+				    currentPage = 1;
+			    }
+
+			    $.ajax({
+				    url:'/getList',
+				    data:{
+					    pageCnt: currentPage-1
+				    },
+				    success:function(res){
+					    $("#listArea").html("");
+					    for(let i=0;i<res.length;i++) {
+                let item = res[i];
+						    // $("#listArea").append(`${item.no}<br />`);
+						    $("#listArea").append(`${item.no} ${item.name} ${item.price}<br />`);
+              }
+
+					    $("#pageArea").html("");
+					    $("#pageArea").append(`<span style="cursor: pointer" onclick="main(1)">≪ </span>`);
+					    $("#pageArea").append(`<span style="cursor: pointer" onclick="main(${currentPage-4})">＜ </span>`);
+					    let middleNumber = currentPage;
+					    if(maxPage - middleNumber < 3) middleNumber = maxPage - 3
+					    if(middleNumber < 4) middleNumber = 4;;
+					    for(let i=0;i<7;i++) {
+					    	let num = middleNumber + i - 3;
+					    	if(num > maxPage) {
+					    		break;
+						    }
+                $("#pageArea").append(`<span style="cursor: pointer" onclick="main(${num})">${num==currentPage?'<u>':''}${num}${num==currentPage?'</u>':''} </span>`);
+              }
+					    $("#pageArea").append(`<span style="cursor: pointer" onclick="main(${currentPage+4})">＞ </span>`);
+					    $("#pageArea").append(`<span style="cursor: pointer" onclick="main(${maxPage})">≫ </span>`);
+				    }
+			    });
+		    }
+	    });
+    }
+    main(currentPage);
+
+</script>
+</html>

@@ -38,6 +38,10 @@ app.get('/manageOrder', function(req, res){
   res.sendfile(__dirname +'/manageorder.html');
 });
 
+app.get('/page', function(req, res){
+  res.sendfile(__dirname +'/paging.html');
+});
+
 ///////////////////////////////////////////////////////////////////////////////
 app.get('/selectItems',function(req, res){
   var selectQuery = `select * from item`;
@@ -113,7 +117,7 @@ app.post('/insertItem', function(req, res){
     res.send(rows);
   });
 });
-///////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////manageOrder.html//////////////////////////////////////////
 app.get('/joinOrderItem', function(req, res){
   var selectQuery = `
   select a.no, a.itemNo, a.id, a.complete, a.quantity, a.date,
@@ -137,7 +141,7 @@ app.post('/cancelOrder', function(req, res){
   connection.query(updateQuery,
   function(err,rows,fields){
     if (err) throw err;
-    res.send(rows);
+    // res.send(rows);
   });
 
   var updateQuery2 = `update item set inventory = inventory + ${quantity} where no = ${itemNo}`;
@@ -145,7 +149,7 @@ app.post('/cancelOrder', function(req, res){
   connection.query(updateQuery2,
   function(err,rows,fields){
     if (err) throw err;
-    // res.send(rows);
+    res.send(rows);
   });
 
 });
@@ -160,3 +164,26 @@ app.post('/completeOrder', function(req, res){
     res.send(rows);
   });
 });
+
+app.get('/pagingItem', function(req, res){
+
+  var selectQuery = `select no, name, price from item order by no desc limit 0, 10`;
+  connection.query(selectQuery,
+  function(err,rows,fields){
+    if (err) throw err;
+    res.send(rows);
+  });
+});
+
+app.get('/countItem', function(req, res){
+  var countQuery = `select count(*) as count from item`;
+  connection.query(countQuery,
+  function(err,rows,fields){
+    if (err) throw err;
+    res.send(rows);
+  });
+});
+
+
+
+//////////////////////////////////////////////////////////////////////////////
