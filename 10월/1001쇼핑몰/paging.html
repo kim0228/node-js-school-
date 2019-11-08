@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>페이징</title>
+    <title>페이징처리</title>
   </head>
   <body>
     <div id = "itemArea"></div>
@@ -10,35 +10,70 @@
   </body>
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script type="text/javascript">
-    var currPage = 1;
-    var pageNUm;
-    $.ajax({
-      url:'/countItem',
-      data:{},
-      success:function(res){
-        console.log(res[0].count);
-        totalCount = res[0].count
-        pageNum = Math.ceil(totalCount/10);
 
-        $.ajax({
-          url:'/pagingItem',
-          data:{
-
-          },
-          success:function(res){
-          console.log(res);
-            for (let i = 0; i < res.length; i++) {
-              let item = res[i];
-              var itemInfo=`<span id="itemList_${item.no}">
-              ${item.no} ${item.name} ${item.price}</span><br>`;
-              $("#itemArea").append(`${itemInfo}`);
-            }
+    let currPage = 1;
+    function movingPage(currPage){
+      $.ajax({
+        url:'/countItem',
+        data:{},
+        success:function(res){
+          // console.log(res[0].count);
+          let totalCount = res[0].count
+          let maxPageNum = Math.ceil(totalCount/10);
+          // console.log(maxPageNum);
+          if (currPage > maxPageNum){ // 페이지가 최대 페이지를 넘기면 최대 페이지로 고정
+            currPage = maxPageNum;
           }
-        });
-      }
-    });
+          if (currPage < 1){ // 페이지가 음수로 되어버리면 현재페이지를 1로 고정
+            currPage = 1;
+          }
+
+          $.ajax({
+            url:'/pagingItem',
+            data:{
+              pageCount:currPage-1,
+            },
+            success:function(res){
+              $("#itemArea").html("");
+              // console.log(res);
+              // for (let i = 0; i < res.length; i++) {
+              //   let item = res[i];
+              //   var itemInfo=`<div id="itemList_${item.no}">
+              //   ${item.no} ${item.name} ${item.price}</div>`;
+              //   $("#itemArea").append(`${itemInfo}`);
+              // }
+
+              for (let i = 0;i<res.length;i++){
+                var itemInfo = `<div id="itemList_${res[i].no}">
+                ${res[i].no} ${res[i].name} ${res[i].price}</div>`;
+                itemInfo += $("#itemArea").html(itemInfo);
+              }
 
 
+              $("#pageArea").html("");
+              $("#pageArea").append(`<span style="cursor: pointer" onclick="movingPage(${1})">≪ </span>`);
+
+              $("#pageArea").append(`<span style="cursor: pointer" onclick="movingPage(${currPage-4})">＜ </span>`);
+              var midNum = currPage;
+              if(maxPageNum - midNum < 3){ // 최대 페이지 수에서 현재 페이지를 뺀 수가 3보다 작으면
+                midNum = maxPageNum - 3; //
+              }
+              if(midNum < 4){midNum = 4}; // 현재 페이지가 4보다 작으면 midNum은 4로 고정
+              for(let i = 0;i<7;i++){
+                var pagingNum = midNum + i - 3; //
+                if (pagingNum > maxPageNum){
+                  break; // 페이지 수가 최대 페이지 수를 넘으면 for문을 빠져나온다.
+                }
+                $("#pageArea").append(`<span style="cursor: pointer" onclick="movingPage(${pagingNum})">${pagingNum==currPage?'<u>':''} ${pagingNum}${pagingNum==currPage?'</u>':''} </span>`)
+              }
+              $("#pageArea").append(`<span style="cursor: pointer" onclick="movingPage(${currPage+4})">＞ </span>`);
+              $("#pageArea").append(`<span style="cursor: pointer" onclick="movingPage(${maxPageNum})">≫ </span>`);
+            }
+          });
+        }
+      });
+    }
+  movingPage(currPage);
 
 
 

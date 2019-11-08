@@ -132,7 +132,7 @@ app.get('/joinOrderItem', function(req, res){
   });
 });
 
-app.post('/cancelOrder', function(req, res){
+app.post('/cancelOrder', function(req, res){ // 주문 취소
   var no = req.body.no;
   var itemNo = req.body.itemNo;
   var quantity = req.body.quantity;
@@ -143,7 +143,7 @@ app.post('/cancelOrder', function(req, res){
     if (err) throw err;
     // res.send(rows);
   });
-
+  // 주문이 취소됨에 따라
   var updateQuery2 = `update item set inventory = inventory + ${quantity} where no = ${itemNo}`;
   console.log(updateQuery2);
   connection.query(updateQuery2,
@@ -164,10 +164,10 @@ app.post('/completeOrder', function(req, res){
     res.send(rows);
   });
 });
-
+//////////////////////////////////////////////////////////////////////////////////
 app.get('/pagingItem', function(req, res){
-
-  var selectQuery = `select no, name, price from item order by no desc limit 0, 10`;
+  var pageCount = req.query.pageCount;
+  var selectQuery = `select * from item order by no desc limit ${pageCount*10}, 10`;
   connection.query(selectQuery,
   function(err,rows,fields){
     if (err) throw err;
